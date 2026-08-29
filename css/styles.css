@@ -191,29 +191,202 @@ button {
   transition: opacity var(--dur) var(--ease);
 }
 
+.info__bio-area {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.info__bio-area > * {
+  grid-row: 1;
+  grid-column: 1;
+  align-self: start;
+}
+
 .info__bio {
   margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  opacity: 1;
+  max-height: 200px;
+  overflow: hidden;
+  transition:
+    opacity var(--dur) var(--ease),
+    max-height var(--dur) var(--ease);
 }
 
 .info__learn {
   color: var(--color-muted);
-  transition: color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
 
 .info__bio:hover .info__learn {
   color: var(--color-black);
 }
 
+.info__bio-full {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  word-break: break-word;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--dur) var(--ease),
+    max-height 0.6s var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.info__bio-full p {
+  margin: 0;
+  transition: color var(--dur) var(--ease);
+}
+
+.info__bio-full p + p {
+  margin-top: 1em;
+}
+
+.info__em {
+  transition: color var(--dur) var(--ease);
+}
+
+.info__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .info__contact {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.info.is-expanded .info__contact {
+  animation: info-contact-cycle calc(var(--dur) * 2) var(--ease) forwards;
+}
+
+@keyframes info-contact-cycle {
+  0% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0;
+  }
+  55% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .info__email,
 .info__cv span {
   text-decoration: underline;
   text-underline-position: from-font;
+  transition: color var(--dur) var(--ease);
+}
+
+.info__esc {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--color-muted);
+  cursor: pointer;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    color var(--dur) var(--ease),
+    opacity var(--dur) var(--ease),
+    max-height var(--dur) var(--ease);
+}
+
+.info__esc:hover {
+  color: var(--color-black);
+}
+
+/* Collapsed → expanded */
+.info.is-expanded .info__bio {
+  opacity: 0;
+  max-height: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease), max-height var(--dur) var(--ease);
+}
+
+.info.is-expanded .info__bio-full {
+  opacity: 1;
+  max-height: 2000px;
+  pointer-events: auto;
+}
+
+.info.is-expanded .info__esc {
+  opacity: 1;
+  max-height: 2em;
+  pointer-events: auto;
+  transition-delay: var(--dur);
+}
+
+/* Expanded colors */
+.info.is-expanded .info__bio-full {
+  color: var(--color-text);
+}
+
+.info.is-expanded .info__em {
+  color: var(--color-muted);
+}
+
+.info.is-expanded .info__email,
+.info.is-expanded .info__cv,
+.info.is-expanded .info__cv span {
+  color: var(--color-text);
+}
+
+.info.is-expanded .info__esc {
+  color: var(--color-muted);
+}
+
+.info.is-expanded .info__em,
+.info.is-expanded .info__email,
+.info.is-expanded .info__cv,
+.info.is-expanded .info__cv span,
+.info.is-expanded .info__esc {
+  transition: color var(--dur) var(--ease);
+}
+
+@media (hover: hover) {
+  .info.is-expanded .info__em:hover {
+    color: var(--color-black);
+  }
+
+  .info.is-expanded .info__email:hover {
+    color: var(--color-black);
+  }
+
+  .info.is-expanded .info__cv:hover,
+  .info.is-expanded .info__cv:hover span {
+    color: var(--color-black);
+  }
+
+  .info.is-expanded .info__esc:hover {
+    color: var(--color-black);
+  }
+}
+
+.home.is-info-expanded .feed {
+  transition: filter var(--dur) var(--ease);
 }
 
 .feed {
@@ -724,6 +897,39 @@ button {
     padding: var(--mobile-pad);
     background: var(--color-bg);
     box-sizing: border-box;
+  }
+
+  .info.is-expanded {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    width: 100%;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .home.is-info-expanded {
+    overflow: hidden;
+  }
+
+  .info.is-expanded .info__bottom {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .info.is-expanded .info__esc {
+    align-self: auto;
+    flex-shrink: 0;
+    color: var(--color-text);
+  }
+
+  .home.is-info-expanded .feed {
+    filter: blur(2px);
+    pointer-events: none;
   }
 
   .feed {

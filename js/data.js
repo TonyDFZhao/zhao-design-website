@@ -1,5 +1,27 @@
 const SITE = {
   bio: "Tony Zhao is a NYC-based brand designer and strategist helping technical companies communicate value... ",
+  bioFull: [
+    [
+      "Tony Zhao is a NYC-based brand designer and strategist helping technical companies communicate value. He is a ",
+      { em: "full-stack designer and design engineer" },
+      ", capable of visual strategy, copywriting, brand identity, web design, web production, motion graphics, launch videos, product design, and more.",
+    ],
+    [
+      "In his previous role as Lead Designer at Flow Studio, Zhao worked with ",
+      { em: "40+ clients, mostly backed by YC and PearX" },
+      ". Their industries ranged from fintech, deep tech, crypto, hospitality, VC, wellness, AI security, SaaS, education, voice agents, media, medical, AI marketing, and more.",
+    ],
+    [
+      "On top of helping his clients raise millions from VCs and private investors, Zhao\u2019s design helps young companies stand out from the competition. For example, his ",
+      { em: "recent collaboration with Proximitty helped them win an RFP against a Series B competitor" },
+      ". He achieves this by working closely with founders\u2014not only as a service provider, but by taking ownership as a real member of the team.",
+    ],
+    [
+      "Zhao is ",
+      { em: "actively looking for new opportunities and connections" },
+      ". If your company is looking for any form of design help, please reach out to:",
+    ],
+  ],
   email: "tonydfzhao@gmail.com",
   instagram: "https://www.instagram.com/tony_zdf/",
   cv: "#",
@@ -160,7 +182,7 @@ const PROJECTS = [
       "We built an organic brand with warm palette & an art direction around nature to bring life to an otherwise cold, unforgiving category.",
       "To attract enterprise users, we put a strong focus on security and compliance, using comfortable pace and simple layouts on the website to make Proximitty easy to understand, easy to use.",
     ],
-    testimonial: "",
+    testimonial: "“Our new brand and website have generated multiple inbound leads and helped us win an RFP against a Series B competitor—the clearest ROI we’ve ever seen. Flow’s incredibly high bar and exceptional taste made that possible.”",
     credits: [
       { role: "Client Outreach", names: "Flow Studio" },
       { role: "Brand Identity", names: "Tony Zhao, Yining Li, Phoenix Gao" },

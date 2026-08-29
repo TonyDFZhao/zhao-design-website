@@ -6,6 +6,9 @@
   const railTicks = document.getElementById("rail-ticks");
   const railMarker = document.getElementById("rail-marker");
   const learnWrap = document.getElementById("learn-more-wrap");
+  const info = document.getElementById("info");
+  const infoBioFull = document.getElementById("info-bio-full");
+  const infoEsc = document.getElementById("info-esc");
   const cvLink = document.getElementById("cv-link");
 
   const carousel = document.getElementById("carousel");
@@ -61,11 +64,46 @@
     return tick.getBoundingClientRect().height + TICK_GAP;
   }
 
+  let infoExpanded = false;
+
+  function renderBioFull() {
+    infoBioFull.innerHTML = SITE.bioFull
+      .map((parts) => {
+        const inner = parts
+          .map((part) =>
+            typeof part === "string"
+              ? part
+              : `<span class="info__em">${part.em}</span>`
+          )
+          .join("");
+        return `<p>${inner}</p>`;
+      })
+      .join("");
+  }
+
+  function expandInfo() {
+    if (infoExpanded || openProject) return;
+    infoExpanded = true;
+    info.classList.add("is-expanded");
+    home.classList.add("is-info-expanded");
+  }
+
+  function collapseInfo() {
+    if (!infoExpanded) return;
+    infoExpanded = false;
+    info.classList.remove("is-expanded");
+    home.classList.remove("is-info-expanded");
+  }
+
   /* ——— Init copy ——— */
+  renderBioFull();
   learnWrap.querySelector(".info__bio-text").textContent = SITE.bio;
   document.querySelector(".info__email").href = `mailto:${SITE.email}`;
   document.querySelector(".info__email").textContent = SITE.email;
   if (SITE.cv && SITE.cv !== "#") cvLink.href = SITE.cv;
+
+  learnWrap.addEventListener("click", expandInfo);
+  infoEsc.addEventListener("click", collapseInfo);
 
   /* ——— Feed ——— */
   function renderFeed() {
@@ -1999,6 +2037,10 @@
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
+      if (infoExpanded) {
+        collapseInfo();
+        return;
+      }
       if (deepOpen) closeDeep();
       else closeAll();
     }
