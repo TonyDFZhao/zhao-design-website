@@ -1,0 +1,337 @@
+const SITE = {
+  bio: "Tony Zhao is a NYC-based brand designer and strategist helping technical companies communicate value... ",
+  email: "tonydfzhao@gmail.com",
+  instagram: "https://www.instagram.com/tony_zdf/",
+  cv: "#",
+};
+
+const ASPECT = {
+  square: { w: 300, h: 300 },
+  landscape: { w: 450, h: 300 },
+  portrait: { w: 200, h: 300 },
+};
+
+const THUMB_ASPECTS = [
+  "square",
+  "landscape",
+  "portrait",
+  "square",
+  "portrait",
+  "landscape",
+  "portrait",
+  "square",
+  "landscape",
+  "portrait",
+  "square",
+  "portrait",
+];
+
+const PLACEHOLDER_COPY = {
+  tagline: "Hospitality AI that enhances human service.",
+  question: "How do you make a young company feel dominant?",
+  client: "Lance (YC X24)",
+  year: "2026",
+  service: "Web Design, Web Production, Brand Elevation",
+  deepHeadline:
+    "Without an actual product, how do you turn an idea into millions? When we first met the founders of Scend, vision was all they had.",
+  challenge:
+    "Without an actual product, how do you turn an idea into millions? When we first met the founders of Scend, vision was all they had. We were tasked with showing the power and potential of the product before it was fully realized, helping shape the user flow, find its story, and design its marketing strategy from 0→1.",
+  strategy: [
+    "We built a brand that feels modern and precise, helping Scend stand out from competitors, a brand rooted deeply in fintech and M&A space.",
+    "We organized the user flow and turned the founders’ ideas into motion sequences that make the product feel real to VCs and customers, before the product was fully built.",
+    "We built the foundation for product development and created a system for Scend to scale as the product expands.",
+  ],
+  testimonial:
+    "“Flow helped us prepare everything we need on the design end as an early-stage startup. They executed on what we could only dream of, but couldn't put on paper.”",
+  credits: [
+    { role: "Web Design", names: "Flow Studio" },
+    { role: "Brand Identity", names: "Tony Zhao, Phoenix Gao, James Wu" },
+    { role: "Web Design", names: "Tony Zhao, Phoenix Gao" },
+    { role: "Motion Graphics", names: "Tony Zhao" },
+  ],
+};
+
+/** Full Scend longform — reused as stand-in for unfinished case studies */
+const SCEND_CASE = {
+  thumb: "documentation/scend/1.jpg?v=r2",
+  thumbFit: "fill",
+  subtitle: "Market Intelligence for M&A.",
+  client: "Scend (PearX W25)",
+  year: "2025 Q2",
+  service: "Brand Identity, Web Design, Motion",
+  question: "Scend strikes a deliberate balance:\n80% institutional and 20% modern.",
+  deepHeadline:
+    "Scend strikes a deliberate balance: 80% institutional and 20% modern. The brand projects trust, clarity, and expertise—essential traits for its M&A audience.",
+  challenge:
+    "Without an actual product, how do you turn an idea into millions? When we first met the founders of Scend, vision was all they had. We were tasked with showing the power and potential of the product before it was fully realized, helping shape the user flow, find its story, and design its marketing strategy from 0→1.",
+  strategyLabel: "Strategy",
+  strategy: [
+    "We built a brand that feels modern and precise, helping Scend stand out from competitors, a brand rooted deeply in fintech and M&A space.",
+    "We organized the user flow and turned the founders’ ideas into motion sequences that make the product feel real to VCs and customers, before the product was fully built.",
+    "We built the foundation for product development and created a system for Scend to scale as the product expands.",
+  ],
+  testimonial:
+    "“Flow helped us prepare everything we need on the design end as an early-stage startup. They executed on what we could only dream of, but couldn't put on paper.”",
+  credits: [
+    { role: "Client Outreach", names: "Flow Studio" },
+    { role: "Brand Identity", names: "Tony Zhao, Phoenix Gao, James Wu" },
+    { role: "Web Design", names: "Tony Zhao, Phoenix Gao" },
+    { role: "Motion Graphics", names: "Tony Zhao" },
+  ],
+  gallery: [
+    { type: "image", src: "documentation/scend/1.jpg?v=r2", width: 3000, height: 2000 },
+    { type: "lottie", src: "documentation/scend/2.json?v=r2", width: 1920, height: 1080 },
+    { type: "video", src: "documentation/scend/3.mp4?v=r2", width: 1500, height: 910 },
+    { type: "image", src: "documentation/scend/4.jpg?v=r2", width: 3000, height: 1687 },
+    { type: "video", src: "documentation/scend/5.mp4?v=r2", width: 3000, height: 1687, stage: { bg: "#C3B4A4", innerW: 1188, innerH: 1191, frameW: 3000, frameH: 1687 } },
+    { type: "lottie", src: "documentation/scend/6.json?v=r2", width: 1934, height: 969, renderer: "svg", bg: "#e6f436" },
+    { type: "question" },
+    { type: "image", src: "documentation/scend/8.jpg?v=r2", width: 3000, height: 1707 },
+    { type: "lottie", src: "documentation/scend/9.json?v=r2", width: 1920, height: 1080, renderer: "svg" },
+    { type: "swap", srcs: [
+      "documentation/scend/10-1.jpg?v=r2",
+      "documentation/scend/10-2.jpg?v=r2",
+      "documentation/scend/10-3.jpg?v=r2",
+    ], width: 3000, height: 2006 },
+    { type: "image", src: "documentation/scend/11.jpg?v=r2", width: 3000, height: 2007 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/scend/12.jpg?v=r2", width: 1699, height: 1819 },
+      { type: "image", src: "documentation/scend/13.jpg?v=r2", width: 1281, height: 1819 },
+    ]},
+    { type: "image", src: "documentation/scend/14.jpg?v=r2", width: 3000, height: 1687 },
+    { type: "image", src: "documentation/scend/15.jpg?v=r2", width: 3000, height: 1920 },
+    { type: "image", src: "documentation/scend/16.jpg?v=r2", width: 3000, height: 2006 },
+  ],
+};
+
+const PROJECTS = [
+  { id: "lance", number: "001", title: "Lance", date: "2026 Q3", type: "long", ...SCEND_CASE },
+  { id: "21group", number: "002", title: "21 Group", date: "2026 Q2", type: "long", ...SCEND_CASE },
+  { id: "confident-ai", number: "003", title: "Confident AI", date: "2025 Q3", type: "long", thumb: "documentation/confident-ai/1(temp).png", thumbFit: "fill", subtitle: "LLM that Moves the Needle", client: "Confident AI (YC W25)", year: "2025 Q3", service: "Brand Elevation, Visual Strategy, Web Design, Product Design", question: "A system Defined by Collaboration",
+    deepHeadline: "A system Defined by Collaboration",
+    challenge: "Dev tools often prioritize functionality over communication, resulting in products that are powerful but difficult to understand for new users. With the launch of new functions that enhances the collaboration between dev and business people, Confident AI needed a brand that could appeal to both technical teams and people that aren’t familiar with tech languages.",
+    strategyLabel: "Strategy",
+    strategy: [
+      "Confident AI already had a strong user base, so rather than introduce a brand that felt foreign, we needed to reorganize its existing brand language into a clearer system.",
+      "AI evaluation is a complex and unfamiliar idea. we need to build informative visualizations, simplify product stories, and clarify hierarchies to reduce cognitive load; without losing the technical depth that gives Confident AI its credibility.",
+      "we color-coded different personas: ENGs, PMs, QAs, etc. and use the same colors across features and customized dashboards to show who each part of the product is built for. This makes the platform easier to navigate and highlights collaboration when different personas appear together.",
+    ],
+    testimonial: "",
+    credits: [
+      { role: "Client Outreach", names: "Flow Studio" },
+      { role: "Brand Identity", names: "Tony Zhao" },
+      { role: "Web Design", names: "Tony Zhao" },
+      { role: "Motion Graphics", names: "Tony Zhao" },
+      { role: "Product Design", names: "Tony Zhao, Phoenix Gao" },
+    ],
+    gallery: [
+    { type: "interactive", variant: "first", width: 1024, height: 682 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/confident-ai/2-left.jpg", width: 1512, height: 2016 },
+      { type: "image", src: "documentation/confident-ai/2-right.jpg", width: 1512, height: 2016 },
+    ]},
+    { type: "video", src: "documentation/confident-ai/3.mp4", width: 2048, height: 1200 },
+    { type: "split", left: { type: "image", src: "documentation/confident-ai/4-left.jpg", width: 1512, height: 2148 }, right: [
+      { type: "image", src: "documentation/confident-ai/4-right-top.jpg", width: 1008, height: 700 },
+      { type: "image", src: "documentation/confident-ai/4-right-bottom.jpg", width: 1512, height: 1050 },
+    ]},
+    { type: "question" },
+    { type: "video", src: "documentation/confident-ai/6.mp4", width: 2048, height: 720 },
+    { type: "interactive", variant: "grid", width: 1024, height: 682 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/confident-ai/8-left.jpg", width: 1149, height: 1080 },
+      { type: "image", src: "documentation/confident-ai/8-right.jpg", width: 1875, height: 1080 },
+    ]},
+    { type: "image", src: "documentation/confident-ai/9.jpg", width: 3072, height: 1080 },
+    { type: "video", src: "documentation/confident-ai/10.mp4", width: 2048, height: 1260, playTrigger: "top" },
+    { type: "row", items: [
+      { type: "image", src: "documentation/confident-ai/11-left.png", width: 1377, height: 2058 },
+      { type: "image", src: "documentation/confident-ai/11-right.png", width: 1098, height: 1372 },
+    ]},
+    { type: "video", src: "documentation/confident-ai/12.mp4", width: 2048, height: 1292 },
+    { type: "video", src: "documentation/confident-ai/13.mp4", width: 2048, height: 1416 },
+    { type: "interactive", variant: "last", width: 1024, height: 682 },
+  ] },
+  { id: "proximitty", number: "004", title: "Proximitty", date: "2026 Q2", type: "long", thumb: "documentation/Proximitty/1.jpg", thumbFit: "fill", subtitle: "Making commercial lending seamless\nwith AI", client: "Proximitty (PearX W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Motion Graphics, Web Production", question: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
+    deepHeadline: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
+    challenge: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious: spreadsheets, legacy banking systems, dense financial data, endless manual work… Proximitty needed to position its AI agents as a warm, efficient tool for lending teams: enterprise-ready enough to earn trust from financial institutions, but grounded in the real businesses and people they serve.",
+    strategyLabel: "Strategy",
+    strategy: [
+      "We built an organic brand with warm palette & an art direction around nature to bring life to an otherwise cold, unforgiving category.",
+      "To attract enterprise users, we put a strong focus on security and compliance, using comfortable pace and simple layouts on the website to make Proximitty easy to understand, easy to use.",
+    ],
+    testimonial: "",
+    credits: [
+      { role: "Client Outreach", names: "Flow Studio" },
+      { role: "Brand Identity", names: "Tony Zhao, Yining Li, Phoenix Gao" },
+      { role: "Web Design", names: "Tony Zhao, Phoenix Gao" },
+      { role: "Motion Graphics", names: "Tony Zhao" },
+      { role: "Web Production", names: "James Wu, Tony Zhao" },
+    ],
+    gallery: [
+    { type: "image", src: "documentation/Proximitty/1.jpg", width: 3072, height: 2046 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Proximitty/2-left.jpg", width: 1512, height: 1776 },
+      { type: "image", src: "documentation/Proximitty/2-right.jpg", width: 1512, height: 1776 },
+    ]},
+    { type: "video", src: "documentation/Proximitty/3.mp4", width: 2048, height: 1152 },
+    { type: "split", left: [
+      { type: "image", src: "documentation/Proximitty/4-left-top.jpg", width: 1512, height: 886 },
+      { type: "image", src: "documentation/Proximitty/4-left-bot.jpg", width: 1512, height: 886 },
+    ], right: { type: "image", src: "documentation/Proximitty/4-right.jpg", width: 1512, height: 1819 } },
+    { type: "row", items: [
+      { type: "video", src: "documentation/Proximitty/5-left.mp4", width: 1314, height: 1064 },
+      { type: "image", src: "documentation/Proximitty/5-right.jpg", width: 1050, height: 1596 },
+    ]},
+    { type: "image", src: "documentation/Proximitty/6.jpg", width: 3072, height: 1960 },
+    { type: "question" },
+    { type: "video", src: "documentation/Proximitty/8.mp4", width: 2218, height: 1296 },
+    { type: "image", src: "documentation/Proximitty/9.jpg", width: 2048, height: 1172 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Proximitty/10-left.jpg", width: 1008, height: 1180 },
+      { type: "image", src: "documentation/Proximitty/10-right.jpg", width: 1008, height: 1180 },
+    ]},
+    { type: "image", src: "documentation/Proximitty/11.jpg", width: 2048, height: 1200 },
+    { type: "image", src: "documentation/Proximitty/12.jpg", width: 2048, height: 1200 },
+  ] },
+  { id: "scend", number: "005", title: "Scend", date: "2025 Q2", type: "long", ...SCEND_CASE },
+  { id: "faction", number: "006", title: "Faction", date: "2025 Q4", type: "long", thumb: "documentation/Faction/1(temp).png", thumbFit: "fill", subtitle: "Imagining the Next Century of\nIndustrial Manufacturing", client: "Faction", year: "2025 Q4", service: "Brand Identity, Motion Design, Web Design, Web Production", question: "Introducing AI to traditional manufacturing is hard. Faction knocks on that door with an identity grounded in legacy.",
+    deepHeadline: "Introducing AI to traditional manufacturing is hard. Faction knocks on that door with an identity grounded in legacy.",
+    challenge: "Manufacturing and distribution is a big business. A single product can pass through dozens of people, teams, and systems before it reaches the customer. Faction is building a platform that connects every step of that process. The products are powerful, but complexity made the user flow hard to follow. Faction needed to communicate the depth of its platform while making each step feel clear, simple, easy to operate",
+    strategyLabel: "Strategy",
+    strategy: [
+      "We built an art direction rooted in the legacy of American manufacturing and distribution, using a refined visual language to give Faction a sense of history, scale, and trust.",
+      "We clarified the user flow and designed motion graphics for all key features to make their product and platform feel easy to use.",
+    ],
+    testimonial: "“If you want to win, work with Flow. They're genuinely creative, hyper responsive, and actually understand taste and brand in an age of AI slop. Trusting someone with your design is a massive deal - Flow feels the weight of that, and are relentlessly committed to making something great.”",
+    credits: [
+      { role: "Client Outreach", names: "Flow Studio" },
+      { role: "Brand Identity", names: "Tony Zhao" },
+      { role: "Web Design", names: "Tony Zhao, Phoenix Gao" },
+      { role: "Motion Graphics", names: "Tony Zhao" },
+      { role: "Web Production", names: "James Wu, Tony Zhao" },
+    ],
+    gallery: [
+    { type: "video", src: "documentation/Faction/1.mp4", width: 1024, height: 682 },
+    { type: "image", src: "documentation/Faction/2.jpg", width: 3072, height: 2046 },
+    { type: "video", src: "documentation/Faction/3.mp4", width: 3072, height: 1779 },
+    { type: "image", src: "documentation/Faction/4.jpg", width: 3072, height: 2046 },
+    { type: "video", src: "documentation/Faction/5.mp4", width: 3072, height: 1728 },
+    { type: "question" },
+    { type: "image", src: "documentation/Faction/7.jpg", width: 3072, height: 2046 },
+    { type: "video", src: "documentation/Faction/8.mp4", width: 3072, height: 1728 },
+    { type: "video", src: "documentation/Faction/9.mp4", width: 3072, height: 2048 },
+    { type: "image", src: "documentation/Faction/10.jpg", width: 3072, height: 2048 },
+    { type: "image", src: "documentation/Faction/11.jpg", width: 3072, height: 2048 },
+    { type: "image", src: "documentation/Faction/12.jpg", width: 3072, height: 2048 },
+  ] },
+  { id: "clarum", number: "007", title: "Clarum", date: "2025 Q3", type: "long", aspect: "portrait", thumb: "documentation/Clarum/Thumbnail.jpg", subtitle: "The intelligence layer for\nprivate capital.", client: "Clarum (YC W24)", year: "2025 Q3", service: "Brand Identity, Motion Graphics, Launch Video Production", question: "We’ve designed and choreographed several launch videos to make the product and the people behind it more tangible.",
+    deepHeadline: "During their numerous pivots and transitions, we have choreographed several launch videos for Clarum to make the product and people behind it more tangible.",
+    challenge: "Private capital is a high-trust business. Clarum was building a new intelligence layer for the industry, but needed a brand that could make the idea feel clear, credible, and easy to understand. The challenge was to give Clarum a strong point of view without making the product feel overly technical or distant.",
+    strategyLabel: "Approach",
+    strategy: "We built a simple, confident identity around the idea of intelligence: clear typography, a focused logo, and a visual system that gives Clarum room to grow. We also used motion to make the product and the people behind it more tangible. A product walkthrough shows how Clarum works, while the launch film shows the team working together to bring the product to life.",
+    testimonial: "“Flow is the most responsive design team I have worked with. They understood our vision immediately and the quality of their work is consistently great. The brand they built is a real competitive advantage for Clarum, and a big reason we have been able to engage some of the largest investment firms since launch.”",
+    credits: [
+      { role: "Client Outreach", names: "Flow Studio" },
+      { role: "Brand Identity", names: "Tony Zhao, Yining Li" },
+      { role: "Motion Graphics", names: "Tony Zhao, Phoenix Gao" },
+      { role: "Video Production", names: "Tony Zhao" },
+    ],
+    gallery: [
+    { type: "lottie", src: "documentation/Clarum/1.json", width: 1024, height: 682, renderer: "svg" },
+    { type: "image", src: "documentation/Clarum/4.png", height: 626 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Clarum/2.png", width: 1088, height: 1273 },
+      { type: "image", src: "documentation/Clarum/3.png", width: 920, height: 1274 },
+    ]},
+    { type: "lottie", src: "documentation/Clarum/5.json", width: 1024, height: 683, renderer: "svg" },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Clarum/6.jpg", width: 889, height: 1040 },
+      { type: "image", src: "documentation/Clarum/7.png", width: 1120, height: 1038 },
+    ]},
+    { type: "question" },
+    { type: "video", src: "documentation/Clarum/8.mp4", height: 576 },
+    { type: "video", src: "documentation/Clarum/9.mp4", height: 576, framed: true },
+    { type: "video", src: "documentation/Clarum/10.mp4", height: 576, framed: true },
+    { type: "image", src: "documentation/Clarum/11.png", height: 574 },
+  ] },
+  { id: "ghosteye", number: "008", title: "GhostEye", date: "2025 Q3", type: "carousel", aspect: "square", thumb: "documentation/GhostEye/1.jpg", border: true, slides: 3, subtitle: "The always-on red team", status: "coming soon", videos: [
+    "documentation/GhostEye/1.mp4",
+    "documentation/GhostEye/2.mp4",
+    "documentation/GhostEye/3.mp4",
+  ] },
+  { id: "flowstate", number: "009", title: "Flowstate", date: "2026 Q1", type: "carousel", thumb: "documentation/flowstate/1.jpg", slides: 5, subtitle: "The Intelligence Layer for Video", status: "coming soon", borderSlides: [3], images: [
+    "documentation/flowstate/1.jpg",
+    "documentation/flowstate/2.jpg",
+    "documentation/flowstate/3.jpg",
+    "documentation/flowstate/4.jpg",
+    "documentation/flowstate/5.jpg",
+  ] },
+  { id: "mindfort", number: "010", title: "Mindfort", date: "2026 Q2", type: "carousel", aspect: "portrait", thumb: "documentation/mindfort/2.jpg", slides: 6, subtitle: "Continuous security across everything you build", status: "coming soon", media: [
+    "documentation/mindfort/1.jpg",
+    "documentation/mindfort/2.jpg",
+    "documentation/mindfort/3.jpg",
+    "documentation/mindfort/4.mp4",
+    "documentation/mindfort/5.jpg",
+    "documentation/mindfort/6.jpg",
+  ] },
+  { id: "pax-market", number: "011", title: "PAX Market", date: "2025 Q3", type: "carousel", aspect: "square", thumb: "documentation/pax/1.jpg", thumbFit: "fill", slides: 5, subtitle: "The future of crypto exchange", status: "coming soon", media: [
+    "documentation/pax/1.jpg",
+    { type: "video", src: "documentation/pax/2.mp4", fit: "contain" },
+    { type: "video", src: "documentation/pax/3.mp4", fit: "contain" },
+    "documentation/pax/4.jpg",
+    "documentation/pax/5.jpg",
+  ] },
+  { id: "ehi", number: "012", title: "EHI", caseTitle: "The Ernest Hemingway Institute", date: "2025 Q2", type: "long", thumb: "documentation/EHI/1.jpg", thumbFit: "fill", subtitle: "A new kind of writing school for a new\nkind of writer", client: "The Ernest Hemingway Institute", year: "2025 Q2", service: "Brand Identity · Web Design", question: "Hemingway stripped writing down to its essentials—we do the same with education.",
+    deepHeadline: "Hemingway stripped writing down to its essentials—we do the same with education.",
+    challenge: "The Ernest Hemingway Institute is a new kind of writing school for a new kind of writer. In a world crowded with content and shortcuts, EHI wanted to bring back discipline, structure, and care to the craft of writing. The challenge was to build a brand that could carry Hemingway's literary legacy while feeling relevant to a new generation of writers.",
+    strategyLabel: "Outcome",
+    strategy: "\"Hemingway stripped writing down to its essentials—we do the same with education.\" We built the identity around a distinctive monogram, creating a cohesive presence that reflects EHI's values and literary legacy, shaping how the Institute looks, sounds, and shows up across every touchpoint.",
+    testimonial: "",
+    credits: [
+      { role: "Brand Identity", names: "Phoenix Gao, Tony Zhao" },
+      { role: "Web Design", names: "Tony Zhao, Phoenix Gao" },
+    ],
+    gallery: [
+    { type: "image", src: "documentation/EHI/1.jpg", width: 2500, height: 1549 },
+    { type: "image", src: "documentation/EHI/2.jpg", width: 2500, height: 1406, border: true, borderAlpha: 0.2 },
+    { type: "image", src: "documentation/EHI/3.jpg", width: 2500, height: 1613 },
+    { type: "image", src: "documentation/EHI/4.jpg", width: 2500, height: 1406, border: true, borderAlpha: 0.2 },
+    { type: "image", src: "documentation/EHI/5.jpg", width: 1465, height: 980 },
+    { type: "question" },
+    { type: "swap", srcs: [
+      "documentation/EHI/7-1.png",
+      "documentation/EHI/7-2.png",
+    ], width: 2500, height: 1298 },
+    { type: "image", src: "documentation/EHI/8.jpg", width: 2500, height: 1406, border: true, borderAlpha: 0.2 },
+    { type: "image", src: "documentation/EHI/9.jpg", width: 2500, height: 1320 },
+    { type: "image", src: "documentation/EHI/10.jpg", width: 2500, height: 1777 },
+    { type: "image", src: "documentation/EHI/11.jpg", width: 2500, height: 1406 },
+    { type: "image", src: "documentation/EHI/12.jpeg", width: 2500, height: 1672 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/EHI/13-left.jpg", width: 1470, height: 980 },
+      { type: "image", src: "documentation/EHI/13-right.jpg", width: 900, height: 1177 },
+    ]},
+    { type: "image", src: "documentation/EHI/14.jpg", width: 1600, height: 1070 },
+    { type: "image", src: "documentation/EHI/15.jpeg", width: 2500, height: 1672 },
+    { type: "image", src: "documentation/EHI/16.jpg", width: 1465, height: 980 },
+    { type: "image", src: "documentation/EHI/17.jpeg", width: 2150, height: 1284 },
+  ] },
+].map((project, index) => {
+  const images = project.images || [];
+  const videos = project.videos || [];
+  const media = project.media || [];
+  return {
+    ...PLACEHOLDER_COPY,
+    ...project,
+    aspect: project.aspect || THUMB_ASPECTS[index],
+    tagline: project.tagline || project.subtitle,
+    client: project.client || project.title,
+    year: project.year || project.date.split(" ")[0],
+    images,
+    videos,
+    media,
+    slides: media.length || videos.length || images.length || project.slides,
+    thumb: project.thumb || images[0] || null,
+  };
+});

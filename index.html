@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tony Zhao — Design</title>
+    <link rel="stylesheet" href="css/styles.css?v=question-880" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <div class="home" id="home">
+        <aside class="info" id="info">
+          <p class="info__bio" id="learn-more-wrap">
+            <span class="info__bio-text"></span>
+            <span class="info__learn">(Learn More)</span>
+          </p>
+          <div class="info__contact">
+            <a class="info__email" href="mailto:tonydfzhao@gmail.com">tonydfzhao@gmail.com</a>
+            <a class="info__cv" href="#" id="cv-link">Download <span>CV</span></a>
+          </div>
+        </aside>
+
+        <main class="feed" id="feed" aria-label="Projects"></main>
+
+        <div class="rail" id="rail">
+          <div class="rail__menu" id="rail-menu" aria-hidden="true"></div>
+          <div class="rail__progress" id="rail-progress" aria-label="Scroll progress">
+            <div class="rail__ticks" id="rail-ticks"></div>
+            <div class="rail__marker" id="rail-marker"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carousel overlay -->
+      <div class="overlay overlay--carousel" id="carousel" aria-hidden="true">
+        <button class="overlay__esc" id="carousel-esc" type="button">(esc)</button>
+        <div class="carousel" id="carousel-stage">
+          <div class="carousel__frame" id="carousel-frame">
+            <div class="carousel__hit carousel__hit--prev" id="carousel-prev" aria-label="Previous"></div>
+            <div class="carousel__hit carousel__hit--next" id="carousel-next" aria-label="Next"></div>
+            <div class="carousel__slide greybox greybox--lg" id="carousel-slide-a">
+              <video class="carousel__video" muted autoplay loop playsinline webkit-playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback noplaybackrate"></video>
+              <div class="carousel__lottie"></div>
+            </div>
+            <div class="carousel__slide greybox greybox--lg" id="carousel-slide-b">
+              <video class="carousel__video" muted autoplay loop playsinline webkit-playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback noplaybackrate"></video>
+              <div class="carousel__lottie"></div>
+            </div>
+            <div class="carousel__dots" id="carousel-dots"></div>
+          </div>
+          <div class="carousel__meta">
+            <div class="carousel__meta-left">
+              <span class="carousel__num" id="carousel-num"></span>
+              <span class="carousel__title" id="carousel-title"></span>
+              <span class="carousel__intro" id="carousel-intro">
+                <span class="carousel__sep"></span>
+                <span class="carousel__sub" id="carousel-sub"></span>
+              </span>
+              <span class="carousel__sep"></span>
+              <span class="carousel__status" id="carousel-status"></span>
+            </div>
+            <span class="carousel__date" id="carousel-date"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Long-form overlay: TEXT box + CASE STUDY box -->
+      <div class="overlay overlay--long" id="longform" aria-hidden="true">
+        <div class="long" id="long-stage">
+          <!-- TEXT box (hidden until Design Story) -->
+          <aside class="deep" id="deep-panel" aria-hidden="true">
+            <div class="deep__inner">
+              <p class="deep__headline" id="deep-headline"></p>
+              <div class="deep__block">
+                <p class="deep__label">Challenge</p>
+                <p class="deep__text" id="deep-challenge"></p>
+              </div>
+              <div class="deep__block">
+                <p class="deep__label" id="deep-strategy-label">Strategy</p>
+                <div id="deep-strategy"></div>
+              </div>
+              <div class="deep__block" id="deep-testimonial-block">
+                <p class="deep__label">Testimonial</p>
+                <p class="deep__text" id="deep-testimonial"></p>
+              </div>
+              <div class="deep__block">
+                <p class="deep__label">Credit</p>
+                <div class="deep__credits" id="deep-credits"></div>
+              </div>
+            </div>
+            <div class="deep__bottom-mask" aria-hidden="true"></div>
+            <button class="deep__handle" id="deep-handle" type="button" aria-label="Close design story"></button>
+          </aside>
+
+          <!-- CASE STUDY box -->
+          <div class="case" id="case-box">
+            <!-- Outside scroll so it stays above case content while sticky/scrolling -->
+            <button class="long__back" id="long-back" type="button" aria-label="Collapse panel">
+              <img src="assets/chevron-left.svg" alt="" width="18" height="18" />
+            </button>
+
+            <div class="case__scroll" id="case-scroll">
+              <!-- Reserves the back button’s layout space (button itself is absolute on .case) -->
+              <div class="long__back-slot" aria-hidden="true"></div>
+
+              <!-- INFO group: Second INFO + INFO, 0px gap -->
+              <div class="case__headers" id="case-headers">
+                <div class="case__second" id="case-second">
+                  <div class="case__second-titles">
+                    <h1 class="long__name long__name--sm" id="long-name-sm"></h1>
+                    <p class="long__tagline long__tagline--sm" id="long-tagline-sm"></p>
+                  </div>
+                </div>
+
+                <div class="case__info" id="case-info">
+                  <div class="case__info-top" id="long-header">
+                    <div class="long__titles">
+                      <h1 class="long__name" id="long-name"></h1>
+                      <p class="long__tagline" id="long-tagline"></p>
+                    </div>
+                    <button class="expand expand--story" id="expand-story" type="button">
+                      <span class="expand__label">Design Story</span>
+                      <img class="expand__icon" src="assets/plus.svg" alt="" width="16" height="16" />
+                    </button>
+                  </div>
+                  <div class="case__info-meta" id="long-meta">
+                    <div class="long__meta-row">
+                      <span class="long__meta-label">Client</span>
+                      <span class="long__meta-value" id="long-client"></span>
+                    </div>
+                    <div class="long__meta-row">
+                      <span class="long__meta-label">Year</span>
+                      <span class="long__meta-value" id="long-year"></span>
+                    </div>
+                    <div class="long__meta-row">
+                      <span class="long__meta-label">Service</span>
+                      <span class="long__meta-value" id="long-service"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Images -->
+              <div class="case__images" id="case-images">
+                <div class="long__media" id="long-media"></div>
+              </div>
+
+              <!-- Footer -->
+              <nav class="case__footer" id="case-footer">
+                <button type="button" id="long-prev">Prev</button>
+                <span class="long__footer-sep"></span>
+                <button type="button" id="long-next">Next</button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--
+        Outside #longform on purpose. The overlay uses opacity, which isolates
+        mix-blend-mode to an empty backdrop — so (close) vanished whenever we
+        picked the “wrong” source color. Fixed + sibling of the overlay lets
+        difference sample the real case / images in every mode.
+      -->
+      <button class="overlay__esc" id="long-esc" type="button">(close)</button>
+    </div>
+
+    <script src="js/lottie.min.js"></script>
+    <script src="js/data.js?v=ehi-6"></script>
+    <script src="js/app.js?v=ehi-4"></script>
+  </body>
+</html>
