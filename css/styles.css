@@ -330,7 +330,6 @@ button {
   opacity: 1;
   max-height: 2000px;
   pointer-events: auto;
-  cursor: pointer;
 }
 
 .info.is-expanded .info__esc {

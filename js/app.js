@@ -103,7 +103,6 @@
   if (SITE.cv && SITE.cv !== "#") cvLink.href = SITE.cv;
 
   learnWrap.addEventListener("click", expandInfo);
-  infoBioFull.addEventListener("click", collapseInfo);
   infoEsc.addEventListener("click", collapseInfo);
 
   /* ——— Feed ——— */
