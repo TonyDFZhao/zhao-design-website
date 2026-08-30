@@ -9,6 +9,7 @@
   const info = document.getElementById("info");
   const infoBioFull = document.getElementById("info-bio-full");
   const infoEsc = document.getElementById("info-esc");
+  const infoSpacer = document.getElementById("info-spacer");
   const cvLink = document.getElementById("cv-link");
 
   const carousel = document.getElementById("carousel");
@@ -65,6 +66,7 @@
   }
 
   let infoExpanded = false;
+  let infoScrollLock = 0;
 
   function renderBioFull() {
     infoBioFull.innerHTML = SITE.bioFull
@@ -83,6 +85,10 @@
 
   function expandInfo() {
     if (infoExpanded || openProject) return;
+    if (isMobile()) {
+      infoScrollLock = home.scrollTop;
+      infoSpacer.style.height = `${info.offsetHeight}px`;
+    }
     infoExpanded = true;
     info.classList.add("is-expanded");
     home.classList.add("is-info-expanded");
@@ -90,9 +96,20 @@
 
   function collapseInfo() {
     if (!infoExpanded) return;
+    const savedScroll = infoScrollLock;
     infoExpanded = false;
     info.classList.remove("is-expanded");
     home.classList.remove("is-info-expanded");
+    info.scrollTop = 0;
+    if (isMobile()) {
+      infoSpacer.style.height = "0";
+      requestAnimationFrame(() => {
+        home.scrollTop = savedScroll;
+        requestAnimationFrame(() => {
+          home.scrollTop = savedScroll;
+        });
+      });
+    }
   }
 
   /* ——— Init copy ——— */
