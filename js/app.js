@@ -571,17 +571,19 @@
     default — play when 50% of the shot’s height is above the line 10% from
     the bottom of the viewport (mid-point reaches the bottom 10% band).
     data-play-trigger="top" — play when the top of the shot reaches that line.
+    data-play-trigger="immediate" — play as soon as the case page opens.
   */
   function isScrollPlayTrigger(el) {
     const host = lottieTriggerHost(el);
     if (!host) return false;
-    const rect = host.getBoundingClientRect();
-    if (rect.height <= 0) return false;
-    const line = window.innerHeight * 0.9;
     const mode =
       el?.dataset?.playTrigger ||
       host?.dataset?.playTrigger ||
       "mid";
+    if (mode === "immediate") return true;
+    const rect = host.getBoundingClientRect();
+    if (rect.height <= 0) return false;
+    const line = window.innerHeight * 0.9;
     if (mode === "top") return rect.top <= line;
     const above = Math.max(0, Math.min(rect.bottom, line) - rect.top);
     return above / rect.height >= 0.5;
@@ -1325,7 +1327,9 @@
 
     if (item.type === "video") {
       const trigger =
-        item.playTrigger === "top" ? ' data-play-trigger="top"' : "";
+        item.playTrigger === "top" || item.playTrigger === "immediate"
+          ? ` data-play-trigger="${item.playTrigger}"`
+          : "";
       return applyStage(
         `<video class="long__video" data-src="${item.src}"${trigger} muted loop playsinline webkit-playsinline preload="none" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback noplaybackrate" disableRemotePlayback></video>`
       );
@@ -1400,8 +1404,13 @@
       video.removeAttribute("autoplay");
       video.dataset.scrollPlayed = "0";
       video.preload = "auto";
-      /* Hold on the first frame until the scroll trigger fires. */
+      /* Hold on the first frame until the scroll trigger fires.
+         Immediate videos skip the hold and start looping on load. */
       const holdFirstFrame = () => {
+        if (video.dataset.playTrigger === "immediate") {
+          maybeStartLongVideo(video);
+          return;
+        }
         try {
           video.pause();
           if (video.currentTime > 0.05) video.currentTime = 0;
@@ -1459,6 +1468,30 @@
         .join("")}</ol>`;
     } else {
       strategyRoot.innerHTML = `<p class="deep__text">${project.strategy || ""}</p>`;
+    }
+    const outcome = project.outcome;
+    const outcomeRoot = document.getElementById("deep-outcome");
+    const outcomeBlock = document.getElementById("deep-outcome-block");
+    if (outcomeRoot && outcomeBlock) {
+      const hasOutcome = Array.isArray(outcome)
+        ? outcome.length > 0
+        : !!(outcome && String(outcome).trim());
+      outcomeBlock.toggleAttribute("hidden", !hasOutcome);
+      if (!hasOutcome) {
+        outcomeRoot.innerHTML = "";
+      } else if (Array.isArray(outcome)) {
+        outcomeRoot.innerHTML = outcome
+          .map((item) => {
+            if (item && typeof item === "object") {
+              const title = item.title ? `<strong>${item.title}</strong> ` : "";
+              return `<p class="deep__text">${title}${item.text || item.body || ""}</p>`;
+            }
+            return `<p class="deep__text">${item}</p>`;
+          })
+          .join("");
+      } else {
+        outcomeRoot.innerHTML = `<p class="deep__text">${outcome}</p>`;
+      }
     }
     document.getElementById("deep-credits").innerHTML = (project.credits || [])
       .map(

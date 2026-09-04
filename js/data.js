@@ -127,7 +127,61 @@ const SCEND_CASE = {
 };
 
 const PROJECTS = [
-  { id: "lance", number: "001", title: "Lance", date: "2026 Q3", type: "long", ...SCEND_CASE },
+  { id: "lance", number: "001", title: "Lance", date: "2026 Q2", type: "long", thumb: "documentation/Lance/1.jpg", thumbFit: "fill", subtitle: "AI for modern hotel operations", client: "Lance (YC W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "Hospitality AI that enhance, not replace, human services",
+    deepHeadline: "Hospitality AI that enhance, not replace, human services",
+    challenge: "Hospitality is a people business, yet Lance was introducing AI into an industry where hotel operators worry that automation will replace human service. At the same time, although the product was significantly more capable than competitors, its existing presentation felt technical and fragmented, making it difficult for enterprise buyers to understand the platform’s offering and sophistication.",
+    strategyLabel: "Strategy",
+    strategy: [
+      "People first: We honed in on art direction that emphasizes people and space, bringing more warmth into the brand to demonstrate how AI enhances—not replaces—human hospitality.",
+      "We created unique scroll-based web experience that communicates Lance’s capability, giving visitors a more intuitive understanding of the platform.",
+      "We developed sleek, liquid-glass marketing UI compositions that make Lance’s technology feel powerful, approachable, enterprise-ready.",
+    ],
+    outcome: [
+      { title: "Enterprise-ready brand presence:", text: "We elevated Lance’s brand experience to feel established, ensuring visual consistency across the website, UI, marketing materials, increased trust with enterprise customers." },
+      { title: "Turned customer stories into proof.", text: "We worked with production teams to document case studies into convincing hotel stories, giving enterprise buyers tangible proof of Lance’s impact." },
+      { title: "A foundation to scale.", text: "We built the web and UI foundation for Lance to grow rapidly, then translated our design system into an Agent Guideline so Lance could expand its website and reshape its broader UI with minimal manual labor." },
+    ],
+    testimonial: "",
+    credits: [
+      { role: "Client Outreach", names: "Flow Studio" },
+      { role: "Branding", names: "Tony Zhao, Phoenix Gao" },
+      { role: "Web Design", names: "Tony Zhao, Phoenix Gao" },
+      { role: "Motion Design", names: "Tony Zhao" },
+      { role: "Web Production", names: "Tony Zhao" },
+    ],
+    gallery: [
+    { type: "image", src: "documentation/Lance/1.jpg", width: 3072, height: 2046 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Lance/2-left.jpg", width: 1512, height: 1800 },
+      { type: "image", src: "documentation/Lance/2-right.jpg", width: 1512, height: 1800 },
+    ]},
+    { type: "image", src: "documentation/Lance/3.jpg", width: 3072, height: 1800 },
+    { type: "image", src: "documentation/Lance/4.jpg", width: 3072, height: 1800 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Lance/5-left.jpg", width: 1512, height: 1800 },
+      { type: "image", src: "documentation/Lance/5-right.jpg", width: 1512, height: 1800 },
+    ]},
+    { type: "image", src: "documentation/Lance/6.jpg", width: 3072, height: 2052 },
+    { type: "image", src: "documentation/Lance/7.jpg", width: 3072, height: 2031 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Lance/8-left.jpg", width: 1512, height: 2016 },
+      { type: "image", src: "documentation/Lance/8-right.jpg", width: 1512, height: 2016 },
+    ]},
+    { type: "question" },
+    { type: "video", src: "documentation/Lance/10.mp4", width: 3072, height: 1800, playTrigger: "immediate" },
+    { type: "image", src: "documentation/Lance/11.jpg", width: 3072, height: 1800 },
+    { type: "image", src: "documentation/Lance/12.jpg", width: 3072, height: 1800 },
+    { type: "image", src: "documentation/Lance/13.jpg", width: 3072, height: 1800 },
+    { type: "image", src: "documentation/Lance/14.jpg", width: 3072, height: 1800 },
+    { type: "image", src: "documentation/Lance/15.jpg", width: 3072, height: 1800 },
+    { type: "video", src: "documentation/Lance/16.mp4", width: 3072, height: 1860 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/Lance/17(left).jpg", width: 1512, height: 1800 },
+      { type: "image", src: "documentation/Lance/17(right).jpg", width: 1512, height: 1800 },
+    ]},
+    { type: "image", src: "documentation/Lance/18.jpg", width: 3072, height: 2055 },
+    { type: "image", src: "documentation/Lance/19.jpg", width: 3072, height: 2205 },
+  ] },
   { id: "21group", number: "002", title: "21 Group", date: "2026 Q2", type: "long", ...SCEND_CASE },
   { id: "confident-ai", number: "003", title: "Confident AI", date: "2025 Q3", type: "long", thumb: "documentation/confident-ai/1(temp).png", thumbFit: "fill", subtitle: "LLM that Moves the Needle", client: "Confident AI (YC W25)", year: "2025 Q3", service: "Brand Elevation, Visual Strategy, Web Design, Product Design", question: "A system Defined by Collaboration",
     deepHeadline: "A system Defined by Collaboration",

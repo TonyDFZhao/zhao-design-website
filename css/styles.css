@@ -1946,6 +1946,12 @@ video::-webkit-media-controls-volume-slider {
   margin-bottom: 0;
 }
 
+#deep-outcome {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .deep__credits {
   display: flex;
   flex-direction: column;
