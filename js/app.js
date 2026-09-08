@@ -52,6 +52,7 @@
   let lottieObserver = null;
   let videoLoadObserver = null;
   let interactiveCleanups = [];
+  let interactiveInstances = [];
   let lottieTriggerRaf = null;
 
   const TICK_GAP = 8; /* matches .rail__ticks gap */
@@ -771,6 +772,15 @@
       } catch (_) {}
     });
     interactiveCleanups = [];
+    interactiveInstances = [];
+  }
+
+  function refreshInteractives() {
+    interactiveInstances.forEach((instance) => {
+      try {
+        instance.refresh?.();
+      } catch (_) {}
+    });
   }
 
   function bindInteractives(root) {
@@ -779,36 +789,75 @@
     const nodes = [...root.querySelectorAll("[data-interactive]")];
     if (!nodes.length) return;
 
-    import(new URL("documentation/confident-ai/interactive/grid-bg.js?v=confident-33", document.baseURI).href)
-      .then(({ mountDotGrid, LETTER_LINES }) => {
-        nodes.forEach((el) => {
-          if (el.dataset.interactiveBound === "1") return;
-          el.dataset.interactiveBound = "1";
-          const variant = el.dataset.interactive;
-          const opts = {};
-          if (variant === "first") {
-            opts.letterLines = LETTER_LINES;
-          }
-          if (variant === "grid") {
-            opts.enableBoxes = true;
-            opts.enableDemo = true;
-          }
-          if (variant === "last") {
-            opts.logo = {
-              src: "documentation/confident-ai/interactive/confident-ai-wordmark.svg",
-              left: 9,
-              top: 498,
-              width: 1007,
-              height: 196,
-            };
-          }
-          const instance = mountDotGrid(el, opts);
-          interactiveCleanups.push(() => instance.destroy());
+    const confidentNodes = nodes.filter((el) =>
+      ["first", "grid", "last"].includes(el.dataset.interactive)
+    );
+    const lanceNodes = nodes.filter(
+      (el) => el.dataset.interactive === "lance-stroke"
+    );
+
+    if (confidentNodes.length) {
+      import(
+        new URL(
+          "documentation/confident-ai/interactive/grid-bg.js?v=confident-33",
+          document.baseURI
+        ).href
+      )
+        .then(({ mountDotGrid, LETTER_LINES }) => {
+          confidentNodes.forEach((el) => {
+            if (el.dataset.interactiveBound === "1") return;
+            el.dataset.interactiveBound = "1";
+            const variant = el.dataset.interactive;
+            const opts = {};
+            if (variant === "first") {
+              opts.letterLines = LETTER_LINES;
+            }
+            if (variant === "grid") {
+              opts.enableBoxes = true;
+              opts.enableDemo = true;
+            }
+            if (variant === "last") {
+              opts.logo = {
+                src: "documentation/confident-ai/interactive/confident-ai-wordmark.svg",
+                left: 9,
+                top: 498,
+                width: 1007,
+                height: 196,
+              };
+            }
+            const instance = mountDotGrid(el, opts);
+            interactiveInstances.push(instance);
+            interactiveCleanups.push(() => instance.destroy());
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to load interactive grid", err);
         });
-      })
-      .catch((err) => {
-        console.error("Failed to load interactive grid", err);
-      });
+    }
+
+    if (lanceNodes.length) {
+      import(
+        new URL(
+          "documentation/Lance/interactive/stroke-draw.js?v=lance-stroke-2",
+          document.baseURI
+        ).href
+      )
+        .then(({ mountLanceStroke }) => {
+          lanceNodes.forEach((el) => {
+            if (el.dataset.interactiveBound === "1") return;
+            el.dataset.interactiveBound = "1";
+            const instance = mountLanceStroke(el, {
+              scrollRoot: caseScroll,
+              isMobile,
+            });
+            interactiveInstances.push(instance);
+            interactiveCleanups.push(() => instance.destroy());
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to load Lance stroke interactive", err);
+        });
+    }
   }
 
   function stopSwapSlots() {
@@ -1431,8 +1480,10 @@
 
     if (item.type === "interactive") {
       const variant = item.variant || "grid";
+      const tone =
+        variant === "lance-stroke" ? " long__shot--lance-stroke" : "";
       return `
-        <figure class="${classes} long__shot--interactive"${styleAttr ? ` style="${styleAttr}"` : ""}>
+        <figure class="${classes} long__shot--interactive${tone}"${styleAttr ? ` style="${styleAttr}"` : ""}>
           <div class="long__interactive" data-interactive="${variant}"></div>
         </figure>`;
     }
@@ -1851,6 +1902,7 @@
     longStage.classList.remove("is-deep-ui", "is-deep-closing");
     longStage.classList.add("is-deep");
     setDeepScrollLock(DEEP_MS);
+    requestAnimationFrame(refreshInteractives);
 
     lockScrollAnchor(anchor, targetTop, DEEP_MS);
     updateDeepChrome();
@@ -1860,6 +1912,7 @@
       longStage.classList.add("is-deep-ui");
       updateDeepChrome();
       checkLottieTriggers();
+      refreshInteractives();
     }, DEEP_MS / 2);
   }
 
@@ -1898,6 +1951,7 @@
     // Target 0 immediately; CSS delays the visual move until 0.5s
     document.documentElement.style.setProperty("--info-shift", "0px");
     clearSecondGap();
+    requestAnimationFrame(refreshInteractives);
 
     lockScrollAnchor(anchor, targetTop, DEEP_CLOSE_MS);
 
@@ -1910,6 +1964,7 @@
       document.getElementById("expand-answer")?.classList.remove("is-open");
       deepPanel.setAttribute("aria-hidden", "true");
       updateDeepChrome();
+      refreshInteractives();
     }, DEEP_CLOSE_MS);
   }
 

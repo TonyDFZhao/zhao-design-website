@@ -150,7 +150,7 @@ const PROJECTS = [
       { role: "Web Production", names: "Tony Zhao" },
     ],
     gallery: [
-    { type: "image", src: "documentation/Lance/1.jpg", width: 3072, height: 2046 },
+    { type: "interactive", variant: "lance-stroke", width: 1024, height: 682 },
     { type: "row", items: [
       { type: "image", src: "documentation/Lance/2-left.jpg", width: 1512, height: 1800 },
       { type: "image", src: "documentation/Lance/2-right.jpg", width: 1512, height: 1800 },
