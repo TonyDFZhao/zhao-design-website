@@ -50,6 +50,7 @@
   const lottiePlayers = [];
   let swapTimers = [];
   let lottieObserver = null;
+  let videoLoadObserver = null;
   let interactiveCleanups = [];
   let lottieTriggerRaf = null;
 
@@ -604,12 +605,37 @@
     }
   }
 
+  const VIDEO_CACHE_BUST = "fs1";
+
+  function videoUrl(src) {
+    if (!src) return src;
+    return src + (src.includes("?") ? "&" : "?") + "v=" + VIDEO_CACHE_BUST;
+  }
+
+  function ensureVideoSrc(video) {
+    const src = video?.dataset?.src;
+    if (!src) return;
+    const url = videoUrl(src);
+    if (video.getAttribute("src") === url) return;
+    video.preload = "auto";
+    video.src = url;
+    video.load();
+  }
+
   function maybeStartLongVideo(video) {
-    if (!video || video.dataset.scrollPlayed === "1") return;
+    if (!video || !video.isConnected) return;
+    if (video.dataset.scrollPlayed === "1") return;
     if (!isScrollPlayTrigger(video)) return;
-    video.dataset.scrollPlayed = "1";
+    ensureVideoSrc(video);
+    if (video.readyState < 2) return;
     const play = video.play();
-    if (play && typeof play.catch === "function") play.catch(() => {});
+    if (play && typeof play.then === "function") {
+      play
+        .then(() => {
+          if (!video.paused) video.dataset.scrollPlayed = "1";
+        })
+        .catch(() => {});
+    }
   }
 
   function checkLottieTriggers() {
@@ -677,6 +703,65 @@
     );
     observeTargets.forEach((el) => lottieObserver.observe(el));
     checkLottieTriggers();
+  }
+
+  function bindLongVideos(root) {
+    if (videoLoadObserver) {
+      videoLoadObserver.disconnect();
+      videoLoadObserver = null;
+    }
+    if (!root) return;
+    const videos = [...root.querySelectorAll(".long__video")];
+    videos.forEach((video) => {
+      const src = video.dataset.src;
+      if (!src) return;
+      stripVideoChrome(video);
+      video.controls = false;
+      video.removeAttribute("controls");
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = false;
+      video.removeAttribute("autoplay");
+      video.dataset.scrollPlayed = "0";
+      video.preload = "none";
+      video.addEventListener("loadeddata", () => {
+        if (video.dataset.playTrigger === "immediate") {
+          maybeStartLongVideo(video);
+          return;
+        }
+        try {
+          video.pause();
+          if (video.currentTime > 0.05) video.currentTime = 0;
+        } catch {
+          /* ignore */
+        }
+        maybeStartLongVideo(video);
+      });
+      video.addEventListener("canplay", () => maybeStartLongVideo(video));
+      if (video.dataset.playTrigger === "immediate") ensureVideoSrc(video);
+    });
+
+    const pending = videos.filter(
+      (video) => video.dataset.src && video.dataset.playTrigger !== "immediate"
+    );
+    if (!pending.length) return;
+
+    if (typeof IntersectionObserver !== "function") {
+      pending.forEach(ensureVideoSrc);
+      return;
+    }
+
+    videoLoadObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          ensureVideoSrc(entry.target);
+          videoLoadObserver?.unobserve(entry.target);
+        });
+      },
+      { root: null, rootMargin: "600px 0px 900px 0px", threshold: 0.01 }
+    );
+    pending.forEach((video) => videoLoadObserver.observe(video));
   }
 
   function destroyInteractives() {
@@ -809,6 +894,11 @@
     const video = slideVideo(el);
     if (!video) return;
     video.removeAttribute("data-play-token");
+    if (video._playRetry) {
+      video.removeEventListener("canplay", video._playRetry);
+      video.removeEventListener("loadeddata", video._playRetry);
+      video._playRetry = null;
+    }
     video.pause();
   }
 
@@ -826,15 +916,20 @@
     video.setAttribute("autoplay", "");
     const token = String(Date.now()) + Math.random();
     video.setAttribute("data-play-token", token);
+    if (video._playRetry) {
+      video.removeEventListener("canplay", video._playRetry);
+      video.removeEventListener("loadeddata", video._playRetry);
+    }
     const tryPlay = () => {
       if (video.getAttribute("data-play-token") !== token) return;
+      if (!video.paused && !video.ended) return;
       const play = video.play();
       if (play && typeof play.catch === "function") play.catch(() => {});
     };
-    video.addEventListener("canplay", tryPlay, { once: true });
-    video.addEventListener("loadeddata", tryPlay, { once: true });
-    if (video.readyState >= 2) tryPlay();
-    else tryPlay();
+    video._playRetry = tryPlay;
+    video.addEventListener("canplay", tryPlay);
+    video.addEventListener("loadeddata", tryPlay);
+    tryPlay();
   }
 
   function preloadImage(src) {
@@ -983,10 +1078,11 @@
 
   function preloadProjectMedia(project) {
     const media = getCarouselMedia(project);
-    media.forEach((item) => {
-      if (item.type === "video") getVideoPoster(item.src);
-    });
-    return Promise.allSettled(media.map(preloadMedia));
+    /* Images/Lottie only — hidden <video> preloaders compete with the
+       visible player for the browser’s decoder slots and can stall playback. */
+    return Promise.allSettled(
+      media.filter((item) => item.type !== "video").map(preloadMedia)
+    );
   }
 
   function applyMediaToSlide(el, item, poster) {
@@ -1027,10 +1123,10 @@
         video.playsInline = true;
         video.style.objectFit = fit;
         if (poster) video.poster = poster;
-        if (video.getAttribute("src") !== item.src) {
-          video.src = item.src;
+        if (video.getAttribute("src") !== videoUrl(item.src)) {
+          video.src = videoUrl(item.src);
+          video.load();
         }
-        video.load();
       }
       return;
     }
@@ -1162,9 +1258,7 @@
     };
 
     if (item.type === "video") {
-      getVideoPoster(item.src)
-        .then(reveal)
-        .catch(() => reveal(null));
+      reveal(null);
       return;
     }
 
@@ -1359,6 +1453,10 @@
     destroyLotties(root);
     destroyInteractives();
     stopSwapSlots();
+    if (videoLoadObserver) {
+      videoLoadObserver.disconnect();
+      videoLoadObserver = null;
+    }
 
     if (!gallery || !gallery.length) {
       root.innerHTML = `
@@ -1389,52 +1487,9 @@
     if (answerBtn && deepOpen) answerBtn.classList.add("is-open");
 
     bindLotties(root);
+    bindLongVideos(root);
     startSwapSlots(root);
     bindInteractives(root);
-
-    root.querySelectorAll(".long__video").forEach((video) => {
-      const src = video.dataset.src;
-      if (!src) return;
-      stripVideoChrome(video);
-      video.controls = false;
-      video.removeAttribute("controls");
-      video.muted = true;
-      video.loop = true;
-      video.autoplay = false;
-      video.removeAttribute("autoplay");
-      video.dataset.scrollPlayed = "0";
-      video.preload = "auto";
-      /* Hold on the first frame until the scroll trigger fires.
-         Immediate videos skip the hold and start looping on load. */
-      const holdFirstFrame = () => {
-        if (video.dataset.playTrigger === "immediate") {
-          maybeStartLongVideo(video);
-          return;
-        }
-        try {
-          video.pause();
-          if (video.currentTime > 0.05) video.currentTime = 0;
-        } catch {
-          /* ignore */
-        }
-        maybeStartLongVideo(video);
-      };
-      video.addEventListener("loadeddata", holdFirstFrame, { once: true });
-      video.src = src;
-      video.load();
-      getVideoPoster(src).then((poster) => {
-        if (!video.isConnected || video.dataset.src !== src || !poster) return;
-        video.poster = poster;
-        const host = video.parentElement;
-        if (
-          host &&
-          !host.classList.contains("long__shot--stage") &&
-          !host.classList.contains("long__stage-inner")
-        ) {
-          host.style.backgroundImage = `url("${poster}")`;
-        }
-      });
-    });
     checkLottieTriggers();
   }
 
