@@ -187,9 +187,9 @@ const PROJECTS = [
     challenge: "Leaders from 21 Group came to us because they wanted to build something that lasts: turning family connections into the foundation of a holding company built to become a dominant force in the growing MENA market.",
     strategyLabel: "Strategy",
     strategy: [
-      "<strong>The name is the brand</strong>: we'll build a type-led identity that makes 21 Group’s name the visual focal point. The goal was simple: make the name easy to recognize and remember.",
-      "<strong>One group, many businesses:</strong> We’ll need a system that lets each holding have its own identity while keeping their connection to 21 Group clear.",
-      "<strong>Keep the web low profile but polished:</strong> rather than boast about its size, we kept the website quiet and confident, letting the brand feel established without saying too much.",
+      "The name is the brand: we'll build a type-led identity that makes 21 Group’s name the visual focal point. The goal was simple: make the name easy to recognize and remember.",
+      "One group, many businesses: We’ll need a system that lets each holding have its own identity while keeping their connection to 21 Group clear.",
+      "Keep the web low profile but polished: rather than boast about its size, we kept the website quiet and confident, letting the brand feel established without saying too much.",
     ],
     testimonial: "",
     credits: [
