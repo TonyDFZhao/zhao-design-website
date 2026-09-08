@@ -183,7 +183,7 @@ const PROJECTS = [
     { type: "image", src: "documentation/Lance/19.jpg", width: 3072, height: 2205 },
   ] },
   { id: "21group", number: "002", title: "21 Group", date: "2026 Q2", type: "long", thumb: "documentation/21Group/1(temp).png", thumbFit: "fill", subtitle: "Multi-strategy holding company taking over\nthe growing MENA market.", client: "21 Group", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "How do you make a young company feel dominant? By making its future success seem inevitable.",
-    deepHeadline: "How do you make a young company feel dominant? By making its future success seem inevitable.",
+    deepHeadline: "How do you make a young company feel dominant?\nBy making its future success seem inevitable.",
     challenge: "Leaders from 21 Group came to us because they wanted to build something that lasts: turning family connections into the foundation of a holding company built to become a dominant force in the growing MENA market.",
     strategyLabel: "Strategy",
     strategy: [

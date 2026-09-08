@@ -1507,7 +1507,11 @@
     document.getElementById("long-client").textContent = project.client;
     document.getElementById("long-year").textContent = project.year;
     document.getElementById("long-service").textContent = project.service;
-    document.getElementById("deep-headline").textContent = project.deepHeadline;
+    document.getElementById("deep-headline").innerHTML = (project.deepHeadline || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\n/g, "<br>");
     document.getElementById("deep-challenge").textContent = project.challenge;
     const testimonial = (project.testimonial || "").trim();
     document.getElementById("deep-testimonial").textContent = testimonial;
