@@ -992,6 +992,7 @@ button {
   .project__thumb--portrait {
     width: 100%;
     height: auto;
+    border-radius: 6px;
   }
 
   .project__thumb--square {
@@ -2055,6 +2056,12 @@ video::-webkit-media-controls-volume-slider {
 
   .long__media {
     gap: 12px;
+  }
+
+  .long__shot,
+  .greybox--lg,
+  .carousel__frame {
+    border-radius: 6px;
   }
 
   /* Keep desktop row / split pairing on mobile (portraits stay side by side). */
