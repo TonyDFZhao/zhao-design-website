@@ -1569,6 +1569,14 @@ button {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  /* Allow vertical case scroll by default (Lance stroke, etc.). */
+  touch-action: pan-y;
+}
+
+/* Confident AI canvas owns the pointer for drawing / demo. */
+.long__interactive[data-interactive="first"],
+.long__interactive[data-interactive="grid"],
+.long__interactive[data-interactive="last"] {
   touch-action: none;
 }
 
@@ -2049,29 +2057,31 @@ video::-webkit-media-controls-volume-slider {
     gap: 12px;
   }
 
-  /* Keep each shot’s desktop width share when stacked (portrait / half-slot stay small). */
+  /* Keep desktop row / split pairing on mobile (portraits stay side by side). */
   .long__row {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: stretch;
   }
 
   .long__row .long__shot {
-    flex: none;
-    width: calc(var(--shot-row-share, 1) * 100%);
-    max-width: 100%;
+    flex: var(--shot-flex, 1) 0 0;
+    flex-shrink: 0;
+    flex-basis: 0;
+    width: auto;
+    max-width: none;
     height: auto;
     aspect-ratio: var(--shot-ar, auto);
   }
 
   .long__split {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    align-items: stretch;
   }
 
   .long__split > .long__shot,
   .long__split-col {
-    flex: none;
-    width: calc(var(--shot-row-share, 0.5) * 100%);
+    flex: 1 0 0;
+    width: auto;
   }
 
   .long__question-block {
