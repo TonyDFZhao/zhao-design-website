@@ -40,7 +40,7 @@
   --radius-sm: 3px;
   --radius-lg: 6px;
   --pad: 16px;
-  --project-h: 300px;
+  --project-h: 360px;
   --ease: ease-in-out;
   --dur: 0.35s;
   --deep-dur: 1s;
@@ -182,12 +182,14 @@ button {
   z-index: 30;
   top: var(--pad);
   left: var(--pad);
-  width: 272px;
+  width: 294px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   color: var(--color-text);
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
   transition: opacity var(--dur) var(--ease);
 }
 
@@ -208,21 +210,20 @@ button {
   border: none;
   background: none;
   font: inherit;
+  font-weight: 300;
+  letter-spacing: inherit;
   color: inherit;
   text-align: left;
   cursor: pointer;
   width: 100%;
   opacity: 1;
-  max-height: 200px;
   overflow: hidden;
-  transition:
-    opacity var(--dur) var(--ease),
-    max-height var(--dur) var(--ease);
+  transition: opacity var(--dur) var(--ease);
 }
 
 .info__learn {
   color: var(--color-muted);
-  transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease);
 }
 
 .info__bio:hover .info__learn {
@@ -238,23 +239,28 @@ button {
   max-height: 0;
   overflow: hidden;
   pointer-events: none;
-  transition:
-    opacity var(--dur) var(--ease),
-    max-height 0.6s var(--ease),
-    color var(--dur) var(--ease);
+  color: var(--color-black);
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  transition: opacity var(--dur) var(--ease);
 }
 
 .info__bio-full p {
   margin: 0;
-  transition: color var(--dur) var(--ease);
 }
 
 .info__bio-full p + p {
-  margin-top: 1em;
+  margin-top: 1.4em;
 }
 
-.info__em {
-  transition: color var(--dur) var(--ease);
+.info__link {
+  text-decoration: underline;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: inherit;
+  pointer-events: none;
 }
 
 .info__bottom {
@@ -267,16 +273,8 @@ button {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  font-weight: 300;
   transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-
-.info.is-expanded .info__contact {
-  animation: info-contact-cycle calc(var(--dur) * 2) var(--ease) forwards;
-}
-
-.info:not(.is-expanded) .info__contact {
-  animation: none;
-  opacity: 1;
 }
 
 .info-spacer {
@@ -284,21 +282,6 @@ button {
   height: 0;
   flex-shrink: 0;
   pointer-events: none;
-}
-
-@keyframes info-contact-cycle {
-  0% {
-    opacity: 1;
-  }
-  45% {
-    opacity: 0;
-  }
-  55% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 
 .info__email,
@@ -309,96 +292,103 @@ button {
 }
 
 .info__esc {
-  align-self: flex-start;
+  position: fixed;
+  top: var(--pad);
+  right: var(--pad);
+  z-index: 40;
   padding: 0;
   border: none;
   background: none;
-  font: inherit;
+  font-family: var(--font);
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  line-height: normal;
   color: var(--color-muted);
   cursor: pointer;
   opacity: 0;
-  max-height: 0;
-  overflow: hidden;
+  visibility: hidden;
   pointer-events: none;
-  transition:
-    color var(--dur) var(--ease),
-    opacity var(--dur) var(--ease),
-    max-height var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
 }
 
 .info__esc:hover {
   color: var(--color-black);
 }
 
-/* Collapsed → expanded */
+.info__esc.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Phase 1: short bio out + background dim */
+.info.is-hiding-short .info__bio {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Phase 2: full paragraph in */
+.info.is-expanded {
+  width: 600px;
+  max-width: calc(100vw - var(--pad) * 2 - 48px);
+  gap: 24px;
+}
+
 .info.is-expanded .info__bio {
   opacity: 0;
   max-height: 0;
   pointer-events: none;
-  transition: opacity var(--dur) var(--ease), max-height var(--dur) var(--ease);
 }
 
 .info.is-expanded .info__bio-full {
   opacity: 1;
-  max-height: 2000px;
+  max-height: none;
   pointer-events: auto;
 }
 
-.info.is-expanded .info__esc {
+.info.is-expanded .info__contact {
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+}
+
+/* Collapse phase: keep tall layout while long bio fades out */
+.info.is-expanded.is-hiding-long .info__bio-full {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.home.is-info-expanded {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.home.is-info-expanded .feed,
+.home.is-info-expanded .rail {
+  pointer-events: none;
+}
+
+.info-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #ffffff 20%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: opacity var(--dur) var(--ease);
+}
+
+.home.is-info-expanded .info-overlay {
   opacity: 1;
-  max-height: 2em;
+  visibility: visible;
   pointer-events: auto;
-  transition-delay: var(--dur);
-}
-
-/* Expanded colors */
-.info.is-expanded .info__bio-full {
-  color: var(--color-text);
-}
-
-.info.is-expanded .info__em {
-  color: var(--color-muted);
-}
-
-.info.is-expanded .info__email,
-.info.is-expanded .info__cv,
-.info.is-expanded .info__cv span {
-  color: var(--color-text);
-}
-
-.info.is-expanded .info__esc {
-  color: var(--color-muted);
-}
-
-.info.is-expanded .info__em,
-.info.is-expanded .info__email,
-.info.is-expanded .info__cv,
-.info.is-expanded .info__cv span,
-.info.is-expanded .info__esc {
-  transition: color var(--dur) var(--ease);
-}
-
-@media (hover: hover) {
-  .info.is-expanded .info__em:hover {
-    color: var(--color-black);
-  }
-
-  .info.is-expanded .info__email:hover {
-    color: var(--color-black);
-  }
-
-  .info.is-expanded .info__cv:hover,
-  .info.is-expanded .info__cv:hover span {
-    color: var(--color-black);
-  }
-
-  .info.is-expanded .info__esc:hover {
-    color: var(--color-black);
-  }
-}
-
-.home.is-info-expanded .feed {
-  transition: filter var(--dur) var(--ease);
 }
 
 .feed {
@@ -457,35 +447,35 @@ button {
 }
 
 .project__thumb--square {
-  width: 300px;
+  width: 360px;
 }
 
 .project__thumb--landscape {
-  width: 450px;
+  width: 540px;
 }
 
 .project__thumb--portrait {
-  width: 200px;
+  width: 240px;
 }
 
 .project__meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   min-width: 0;
   font-size: 13px;
   white-space: nowrap;
-}
-
-.project__left {
-  display: flex;
-  gap: 12px;
   color: var(--color-text);
+  transition: color var(--dur) var(--ease);
 }
 
-.project__date {
-  color: var(--color-muted);
+.project:hover .project__meta {
+  color: var(--color-black);
+}
+
+.project__title {
+  text-align: center;
 }
 
 /* ——— Progress rail ——— */
@@ -910,11 +900,17 @@ button {
     top: 0;
     left: 0;
     width: 100%;
+    max-width: none;
     padding: var(--mobile-pad);
     background: var(--color-bg);
     box-sizing: border-box;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    gap: 12px;
   }
 
+  .info.is-hiding-short,
   .info.is-expanded {
     position: fixed;
     top: 0;
@@ -922,14 +918,25 @@ button {
     right: 0;
     z-index: 40;
     width: 100%;
+    max-width: none;
     max-height: 100dvh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: var(--mobile-pad);
+    background: var(--color-bg);
   }
 
-  .home.is-info-expanded {
-    overflow: hidden;
-    overscroll-behavior: none;
+  .info.is-expanded .info__bio-full {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    color: var(--color-black);
+  }
+
+  .info.is-expanded .info__contact {
+    font-size: 13px;
+    color: var(--color-text);
   }
 
   .info.is-expanded .info__bottom {
@@ -939,14 +946,33 @@ button {
     gap: 12px;
   }
 
-  .info.is-expanded .info__esc {
-    align-self: auto;
+  /* Mobile: keep esc out of flow until visible, then sit at bottom with contact */
+  .info__esc {
+    position: fixed;
+    top: auto;
+    right: auto;
+    bottom: -100px;
+    left: -100px;
     flex-shrink: 0;
-    color: var(--color-text);
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  .info__esc.is-visible {
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+  }
+
+  .home.is-info-expanded {
+    overflow: hidden;
+    overscroll-behavior: none;
   }
 
   .home.is-info-expanded .feed {
-    filter: blur(2px);
+    filter: none;
     pointer-events: none;
   }
 

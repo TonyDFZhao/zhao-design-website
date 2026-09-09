@@ -69,16 +69,29 @@
 
   let infoExpanded = false;
   let infoScrollLock = 0;
+  let infoAnimTimer = null;
+
+  function clearInfoAnimTimer() {
+    if (infoAnimTimer) {
+      clearTimeout(infoAnimTimer);
+      infoAnimTimer = null;
+    }
+  }
 
   function renderBioFull() {
     infoBioFull.innerHTML = SITE.bioFull
       .map((parts) => {
         const inner = parts
-          .map((part) =>
-            typeof part === "string"
-              ? part
-              : `<span class="info__em">${part.em}</span>`
-          )
+          .map((part) => {
+            if (typeof part === "string") return part;
+            if (part.link) {
+              return `<span class="info__link">${part.link}</span>`;
+            }
+            if (part.em) {
+              return `<span class="info__em">${part.em}</span>`;
+            }
+            return "";
+          })
           .join("");
         return `<p>${inner}</p>`;
       })
@@ -87,30 +100,76 @@
 
   function expandInfo() {
     if (infoExpanded || openProject) return;
+    clearInfoAnimTimer();
     if (isMobile()) {
       infoScrollLock = home.scrollTop;
       infoSpacer.style.height = `${info.offsetHeight}px`;
+    } else {
+      infoScrollLock = home.scrollTop;
     }
     infoExpanded = true;
-    info.classList.add("is-expanded");
+    document.body.classList.add("is-locked");
+    /* Phase 1: short bio out + background dim together */
     home.classList.add("is-info-expanded");
+    info.classList.add("is-hiding-short");
+    info.classList.remove("is-expanded", "is-hiding-long");
+    infoEsc.classList.remove("is-visible");
+
+    infoAnimTimer = setTimeout(() => {
+      infoAnimTimer = null;
+      if (!infoExpanded) return;
+      /* Phase 2: long bio + esc fade in */
+      info.classList.add("is-expanded");
+      info.classList.remove("is-hiding-short");
+      infoEsc.classList.add("is-visible");
+    }, OVERLAY_FADE_MS);
   }
 
   function collapseInfo() {
-    if (!infoExpanded) return;
+    if (!infoExpanded && !info.classList.contains("is-hiding-short")) return;
+    clearInfoAnimTimer();
     const savedScroll = infoScrollLock;
+    const wasExpanded = info.classList.contains("is-expanded");
     infoExpanded = false;
-    info.classList.remove("is-expanded");
+    infoEsc.classList.remove("is-visible");
+
+    if (wasExpanded) {
+      /* Phase 1: long bio + esc out (keep layout height) */
+      info.classList.add("is-hiding-long");
+      infoAnimTimer = setTimeout(() => {
+        infoAnimTimer = null;
+        info.classList.remove("is-expanded", "is-hiding-long");
+        info.classList.add("is-hiding-short");
+        home.classList.remove("is-info-expanded");
+        document.body.classList.remove("is-locked");
+        info.scrollTop = 0;
+        requestAnimationFrame(() => {
+          info.classList.remove("is-hiding-short");
+          if (isMobile()) {
+            infoSpacer.style.height = "0";
+            requestAnimationFrame(() => {
+              home.scrollTop = savedScroll;
+              requestAnimationFrame(() => {
+                home.scrollTop = savedScroll;
+              });
+            });
+          } else {
+            home.scrollTop = savedScroll;
+          }
+        });
+      }, OVERLAY_FADE_MS);
+      return;
+    }
+
+    /* Still in phase 1 of expand — just revert */
+    info.classList.remove("is-hiding-short", "is-expanded", "is-hiding-long");
     home.classList.remove("is-info-expanded");
-    info.scrollTop = 0;
+    document.body.classList.remove("is-locked");
     if (isMobile()) {
       infoSpacer.style.height = "0";
-      requestAnimationFrame(() => {
-        home.scrollTop = savedScroll;
-        requestAnimationFrame(() => {
-          home.scrollTop = savedScroll;
-        });
-      });
+      home.scrollTop = savedScroll;
+    } else {
+      home.scrollTop = savedScroll;
     }
   }
 
@@ -119,10 +178,29 @@
   learnWrap.querySelector(".info__bio-text").textContent = SITE.bio;
   document.querySelector(".info__email").href = `mailto:${SITE.email}`;
   document.querySelector(".info__email").textContent = SITE.email;
-  if (SITE.cv && SITE.cv !== "#") cvLink.href = SITE.cv;
+  if (SITE.cv && SITE.cv !== "#") {
+    cvLink.href = SITE.cv;
+    cvLink.setAttribute("download", "ZHAO_RESUME_2026.pdf");
+  }
 
   learnWrap.addEventListener("click", expandInfo);
-  infoEsc.addEventListener("click", collapseInfo);
+  infoEsc.addEventListener("click", (e) => {
+    e.stopPropagation();
+    collapseInfo();
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!infoExpanded) return;
+    if (
+      e.target.closest(".info__bio-full") ||
+      e.target.closest(".info__contact") ||
+      e.target.closest("#info-esc") ||
+      e.target.closest("#learn-more-wrap")
+    ) {
+      return;
+    }
+    collapseInfo();
+  });
 
   /* ——— Feed ——— */
   function renderFeed() {
@@ -138,11 +216,7 @@
           <div class="project__thumb-media${project.thumbFit === "fill" ? " is-fill" : ""}"${project.thumb ? ` style="background-image: url('${project.thumb}')"` : ""}></div>
         </div>
         <div class="project__meta">
-          <div class="project__left">
-            <span>${project.number}</span>
-            <span>${project.title}</span>
-          </div>
-          <span class="project__date">${project.date}</span>
+          <span class="project__title">${project.title}</span>
         </div>
       `;
       btn.addEventListener("click", () => openFromIndex(index));

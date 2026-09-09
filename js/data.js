@@ -1,51 +1,43 @@
 const SITE = {
-  bio: "Tony Zhao is a NYC-based brand designer and strategist helping technical companies communicate value... ",
+  bio: "A full-stack designer and design engineer helping ambitious business grow through high-impact visual strategy, web design & development, motion, launch videos and more. ",
   bioFull: [
     [
-      "Tony Zhao is a NYC-based brand designer and strategist helping technical companies communicate value. He is a ",
-      { em: "full-stack designer and design engineer" },
-      ", capable of visual strategy, copywriting, brand identity, web design, web production, motion graphics, launch videos, product design, and more.",
+      "Tony (Dongfang) Zhao is a full-stack designer and design engineer helping ambitious businesses turn ideas into high-impact brands and experiences.",
     ],
     [
-      "In his previous role as Lead Designer at Flow Studio, Zhao worked with ",
-      { em: "40+ clients, mostly backed by YC and PearX" },
-      ". Their industries ranged from fintech, deep tech, crypto, hospitality, VC, wellness, AI security, SaaS, education, voice agents, media, medical, AI marketing, and more.",
+      "Working across visual strategy, web design & development, motion, launch films, and beyond, he shapes the full expression of a brand \u2013 helping it move, speak, and connect with clarity and personality.",
     ],
     [
-      "On top of helping his clients raise millions from VCs and private investors, Zhao\u2019s design helps young companies stand out from the competition. For example, his ",
-      { em: "recent collaboration with Proximitty helped them win an RFP against a Series B competitor" },
-      ". He achieves this by working closely with founders\u2014not only as a service provider, but by taking ownership as a real member of the team.",
+      "Previously as a Lead Designer at Flow Studio, he helped shape and grow 40+ businesses across fintech, deep tech, AI, crypto, hospitality, healthcare, SaaS, venture capital, and more \u2013 many backed by YC and PearX.",
     ],
     [
-      "Zhao is ",
-      { em: "actively looking for new opportunities and connections" },
-      ". If your company is looking for any form of design help, please reach out to:",
+      "He works closely with founders as an extension of their team \u2013 taking ownership of the problem, thinking beyond the brief, and building whatever it takes to move the business forward. His work has helped early-stage companies sharpen their positioning, raise millions in funding, and stand apart in competitive markets. Most recently, his collaboration with Proximitty helped the company win an RFP against a Series B competitor.",
     ],
   ],
   email: "tonydfzhao@gmail.com",
   instagram: "https://www.instagram.com/tony_zdf/",
-  cv: "#",
+  cv: "assets/ZHAO_RESUME_2026.pdf",
 };
 
 const ASPECT = {
-  square: { w: 300, h: 300 },
-  landscape: { w: 450, h: 300 },
-  portrait: { w: 200, h: 300 },
+  square: { w: 360, h: 360 },
+  landscape: { w: 540, h: 360 },
+  portrait: { w: 240, h: 360 },
 };
 
 const THUMB_ASPECTS = [
+  "landscape",
   "square",
   "landscape",
-  "portrait",
-  "square",
-  "portrait",
-  "landscape",
-  "portrait",
   "square",
   "landscape",
-  "portrait",
+  "landscape",
+  "landscape",
   "square",
-  "portrait",
+  "square",
+  "landscape",
+  "square",
+  "landscape",
 ];
 
 const PLACEHOLDER_COPY = {
@@ -127,7 +119,48 @@ const SCEND_CASE = {
 };
 
 const PROJECTS = [
-  { id: "lance", number: "001", title: "Lance", date: "2026 Q2", type: "long", thumb: "documentation/Lance/1.jpg", thumbFit: "fill", subtitle: "AI for modern hotel operations", client: "Lance (YC W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "Hospitality AI that enhance, not replace, human services",
+  { id: "21group", number: "001", title: "21 Group", date: "2026 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/21Group.png", thumbFit: "fill", subtitle: "Multi-strategy holding company taking over\nthe growing MENA market.", client: "21 Group", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "How do you make a young company feel dominant? By making its future success seem inevitable.",
+    deepHeadline: "How do you make a young company feel dominant?\nBy making its future success seem inevitable.",
+    challenge: "Leaders from 21 Group came to us because they wanted to build something that lasts: turning family connections into the foundation of a holding company built to become a dominant force in the growing MENA market.",
+    strategyLabel: "Strategy",
+    strategy: [
+      "The name is the brand: we'll build a type-led identity that makes 21 Group’s name the visual focal point. The goal was simple: make the name easy to recognize and remember.",
+      "One group, many businesses: We’ll need a system that lets each holding have its own identity while keeping their connection to 21 Group clear.",
+      "Keep the web low profile but polished: rather than boast about its size, we kept the website quiet and confident, letting the brand feel established without saying too much.",
+    ],
+    testimonial: "",
+    credits: [
+      { role: "Client Outreach", names: "Flow Studio" },
+      { role: "Brand Identity", names: "Tony Zhao, Phoenix Gao" },
+      { role: "Web Design", names: "Tony Zhao" },
+      { role: "Motion", names: "Tony Zhao" },
+      { role: "Web Production", names: "Tony Zhao" },
+    ],
+    gallery: [
+    { type: "video", src: "documentation/21Group/1.mp4", width: 2048, height: 1364 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/21Group/2-left.jpg", width: 1347, height: 1890 },
+      { type: "image", src: "documentation/21Group/2-right.png", width: 1677, height: 1890 },
+    ]},
+    { type: "image", src: "documentation/21Group/3.png", width: 3072, height: 1860 },
+    { type: "row", items: [
+      { type: "image", src: "documentation/21Group/4-left.jpg", width: 1549, height: 2070 },
+      { type: "image", src: "documentation/21Group/4-right.jpg", width: 1476, height: 2070 },
+    ]},
+    { type: "image", src: "documentation/21Group/5.png", width: 3072, height: 1800 },
+    { type: "image", src: "documentation/21Group/6.jpg", width: 3072, height: 1644 },
+    { type: "question" },
+    { type: "row", items: [
+      { type: "video", src: "documentation/21Group/8-left.mp4", width: 1008, height: 1248 },
+      { type: "video", src: "documentation/21Group/8-right.mp4", width: 1008, height: 1248 },
+    ]},
+    { type: "video", src: "documentation/21Group/9.mp4", width: 2048, height: 1364 },
+    { type: "image", src: "documentation/21Group/10.jpg", width: 3072, height: 5058 },
+    { type: "video", src: "documentation/21Group/11.mp4", width: 2048, height: 1200 },
+    { type: "image", src: "documentation/21Group/12.jpg", width: 3072, height: 2130 },
+    { type: "image", src: "documentation/21Group/13.jpg", width: 3072, height: 1953 },
+  ] },
+  { id: "lance", number: "002", title: "Lance", date: "2026 Q2", type: "long", aspect: "square", thumb: "documentation/Thumbnails/Lance.png", thumbFit: "fill", subtitle: "AI for modern hotel operations", client: "Lance (YC W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "Hospitality AI that enhance, not replace, human services",
     deepHeadline: "Hospitality AI that enhance, not replace, human services",
     challenge: "Hospitality is a people business, yet Lance was introducing AI into an industry where hotel operators worry that automation will replace human service. At the same time, although the product was significantly more capable than competitors, its existing presentation felt technical and fragmented, making it difficult for enterprise buyers to understand the platform’s offering and sophistication.",
     strategyLabel: "Strategy",
@@ -182,48 +215,7 @@ const PROJECTS = [
     { type: "image", src: "documentation/Lance/18.jpg", width: 3072, height: 2055 },
     { type: "image", src: "documentation/Lance/19.jpg", width: 3072, height: 2205 },
   ] },
-  { id: "21group", number: "002", title: "21 Group", date: "2026 Q2", type: "long", thumb: "documentation/21Group/1(temp).png", thumbFit: "fill", subtitle: "Multi-strategy holding company taking over\nthe growing MENA market.", client: "21 Group", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "How do you make a young company feel dominant? By making its future success seem inevitable.",
-    deepHeadline: "How do you make a young company feel dominant?\nBy making its future success seem inevitable.",
-    challenge: "Leaders from 21 Group came to us because they wanted to build something that lasts: turning family connections into the foundation of a holding company built to become a dominant force in the growing MENA market.",
-    strategyLabel: "Strategy",
-    strategy: [
-      "The name is the brand: we'll build a type-led identity that makes 21 Group’s name the visual focal point. The goal was simple: make the name easy to recognize and remember.",
-      "One group, many businesses: We’ll need a system that lets each holding have its own identity while keeping their connection to 21 Group clear.",
-      "Keep the web low profile but polished: rather than boast about its size, we kept the website quiet and confident, letting the brand feel established without saying too much.",
-    ],
-    testimonial: "",
-    credits: [
-      { role: "Client Outreach", names: "Flow Studio" },
-      { role: "Brand Identity", names: "Tony Zhao, Phoenix Gao" },
-      { role: "Web Design", names: "Tony Zhao" },
-      { role: "Motion", names: "Tony Zhao" },
-      { role: "Web Production", names: "Tony Zhao" },
-    ],
-    gallery: [
-    { type: "video", src: "documentation/21Group/1.mp4", width: 2048, height: 1364 },
-    { type: "row", items: [
-      { type: "image", src: "documentation/21Group/2-left.jpg", width: 1347, height: 1890 },
-      { type: "image", src: "documentation/21Group/2-right.png", width: 1677, height: 1890 },
-    ]},
-    { type: "image", src: "documentation/21Group/3.png", width: 3072, height: 1860 },
-    { type: "row", items: [
-      { type: "image", src: "documentation/21Group/4-left.jpg", width: 1549, height: 2070 },
-      { type: "image", src: "documentation/21Group/4-right.jpg", width: 1476, height: 2070 },
-    ]},
-    { type: "image", src: "documentation/21Group/5.png", width: 3072, height: 1800 },
-    { type: "image", src: "documentation/21Group/6.jpg", width: 3072, height: 1644 },
-    { type: "question" },
-    { type: "row", items: [
-      { type: "video", src: "documentation/21Group/8-left.mp4", width: 1008, height: 1248 },
-      { type: "video", src: "documentation/21Group/8-right.mp4", width: 1008, height: 1248 },
-    ]},
-    { type: "video", src: "documentation/21Group/9.mp4", width: 2048, height: 1364 },
-    { type: "image", src: "documentation/21Group/10.jpg", width: 3072, height: 5058 },
-    { type: "video", src: "documentation/21Group/11.mp4", width: 2048, height: 1200 },
-    { type: "image", src: "documentation/21Group/12.jpg", width: 3072, height: 2130 },
-    { type: "image", src: "documentation/21Group/13.jpg", width: 3072, height: 1953 },
-  ] },
-  { id: "confident-ai", number: "003", title: "Confident AI", date: "2025 Q3", type: "long", thumb: "documentation/confident-ai/1(temp).png", thumbFit: "fill", subtitle: "LLM that Moves the Needle", client: "Confident AI (YC W25)", year: "2025 Q3", service: "Brand Elevation, Visual Strategy, Web Design, Product Design", question: "A system Defined by Collaboration",
+  { id: "confident-ai", number: "003", title: "Confident AI", date: "2025 Q3", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/Confident-AI.png", thumbFit: "fill", subtitle: "LLM that Moves the Needle", client: "Confident AI (YC W25)", year: "2025 Q3", service: "Brand Elevation, Visual Strategy, Web Design, Product Design", question: "A system Defined by Collaboration",
     deepHeadline: "A system Defined by Collaboration",
     challenge: "Dev tools often prioritize functionality over communication, resulting in products that are powerful but difficult to understand for new users. With the launch of new functions that enhances the collaboration between dev and business people, Confident AI needed a brand that could appeal to both technical teams and people that aren’t familiar with tech languages.",
     strategyLabel: "Strategy",
@@ -268,7 +260,8 @@ const PROJECTS = [
     { type: "video", src: "documentation/confident-ai/13.mp4", width: 2048, height: 1416 },
     { type: "interactive", variant: "last", width: 1024, height: 682 },
   ] },
-  { id: "proximitty", number: "004", title: "Proximitty", date: "2026 Q2", type: "long", thumb: "documentation/Proximitty/1.jpg", thumbFit: "fill", subtitle: "Making commercial lending seamless\nwith AI", client: "Proximitty (PearX W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Motion Graphics, Web Production", question: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
+  { id: "scend", number: "004", title: "Scend", date: "2025 Q2", type: "long", ...SCEND_CASE, thumb: "documentation/Thumbnails/Scend.png", thumbFit: "fill", aspect: "square" },
+  { id: "proximitty", number: "005", title: "Proximitty", date: "2026 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/Proximitty.jpg", thumbFit: "fill", subtitle: "Making commercial lending seamless\nwith AI", client: "Proximitty (PearX W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Motion Graphics, Web Production", question: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
     deepHeadline: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
     challenge: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious: spreadsheets, legacy banking systems, dense financial data, endless manual work… Proximitty needed to position its AI agents as a warm, efficient tool for lending teams: enterprise-ready enough to earn trust from financial institutions, but grounded in the real businesses and people they serve.",
     strategyLabel: "Strategy",
@@ -310,8 +303,7 @@ const PROJECTS = [
     { type: "image", src: "documentation/Proximitty/11.jpg", width: 2048, height: 1200 },
     { type: "image", src: "documentation/Proximitty/12.jpg", width: 2048, height: 1200 },
   ] },
-  { id: "scend", number: "005", title: "Scend", date: "2025 Q2", type: "long", ...SCEND_CASE },
-  { id: "faction", number: "006", title: "Faction", date: "2025 Q4", type: "long", thumb: "documentation/Faction/1(temp).png", thumbFit: "fill", subtitle: "Imagining the Next Century of\nIndustrial Manufacturing", client: "Faction", year: "2025 Q4", service: "Brand Identity, Motion Design, Web Design, Web Production", question: "Introducing AI to traditional manufacturing is hard. Faction knocks on that door with an identity grounded in legacy.",
+  { id: "faction", number: "006", title: "Faction", date: "2025 Q4", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/Faction.png", thumbFit: "fill", subtitle: "Imagining the Next Century of\nIndustrial Manufacturing", client: "Faction", year: "2025 Q4", service: "Brand Identity, Motion Design, Web Design, Web Production", question: "Introducing AI to traditional manufacturing is hard. Faction knocks on that door with an identity grounded in legacy.",
     deepHeadline: "Introducing AI to traditional manufacturing is hard. Faction knocks on that door with an identity grounded in legacy.",
     challenge: "Manufacturing and distribution is a big business. A single product can pass through dozens of people, teams, and systems before it reaches the customer. Faction is building a platform that connects every step of that process. The products are powerful, but complexity made the user flow hard to follow. Faction needed to communicate the depth of its platform while making each step feel clear, simple, easy to operate",
     strategyLabel: "Strategy",
@@ -341,7 +333,12 @@ const PROJECTS = [
     { type: "image", src: "documentation/Faction/11.jpg", width: 3072, height: 2048 },
     { type: "image", src: "documentation/Faction/12.jpg", width: 3072, height: 2048 },
   ] },
-  { id: "clarum", number: "007", title: "Clarum", date: "2025 Q3", type: "long", aspect: "portrait", thumb: "documentation/Clarum/Thumbnail.jpg", subtitle: "The intelligence layer for\nprivate capital.", client: "Clarum (YC W24)", year: "2025 Q3", service: "Brand Identity, Motion Graphics, Launch Video Production", question: "We’ve designed and choreographed several launch videos to make the product and the people behind it more tangible.",
+  { id: "ghosteye", number: "007", title: "GhostEye", date: "2025 Q3", type: "carousel", aspect: "landscape", thumb: "documentation/Thumbnails/GhostEye.png", thumbFit: "fill", border: true, slides: 3, subtitle: "The always-on red team", status: "coming soon", videos: [
+    "documentation/GhostEye/1.mp4",
+    "documentation/GhostEye/2.mp4",
+    "documentation/GhostEye/3.mp4",
+  ] },
+  { id: "clarum", number: "008", title: "Clarum", date: "2025 Q3", type: "long", aspect: "square", thumb: "documentation/Thumbnails/Clarum.png", thumbFit: "fill", subtitle: "The intelligence layer for\nprivate capital.", client: "Clarum (YC W24)", year: "2025 Q3", service: "Brand Identity, Motion Graphics, Launch Video Production", question: "We’ve designed and choreographed several launch videos to make the product and the people behind it more tangible.",
     deepHeadline: "During their numerous pivots and transitions, we have choreographed several launch videos for Clarum to make the product and people behind it more tangible.",
     challenge: "Private capital is a high-trust business. Clarum was building a new intelligence layer for the industry, but needed a brand that could make the idea feel clear, credible, and easy to understand. The challenge was to give Clarum a strong point of view without making the product feel overly technical or distant.",
     strategyLabel: "Approach",
@@ -371,19 +368,14 @@ const PROJECTS = [
     { type: "video", src: "documentation/Clarum/10.mp4", height: 576, framed: true },
     { type: "image", src: "documentation/Clarum/11.png", height: 574 },
   ] },
-  { id: "ghosteye", number: "008", title: "GhostEye", date: "2025 Q3", type: "carousel", aspect: "square", thumb: "documentation/GhostEye/1.jpg", border: true, slides: 3, subtitle: "The always-on red team", status: "coming soon", videos: [
-    "documentation/GhostEye/1.mp4",
-    "documentation/GhostEye/2.mp4",
-    "documentation/GhostEye/3.mp4",
+  { id: "pax-market", number: "009", title: "PAX Market", date: "2025 Q3", type: "carousel", aspect: "square", thumb: "documentation/Thumbnails/PAX-Market.png", thumbFit: "fill", slides: 5, subtitle: "The future of crypto exchange", status: "coming soon", media: [
+    "documentation/pax/1.jpg",
+    { type: "video", src: "documentation/pax/2.mp4", fit: "contain" },
+    { type: "video", src: "documentation/pax/3.mp4", fit: "contain" },
+    "documentation/pax/4.jpg",
+    "documentation/pax/5.jpg",
   ] },
-  { id: "flowstate", number: "009", title: "Flowstate", date: "2026 Q1", type: "carousel", thumb: "documentation/flowstate/1.jpg", slides: 5, subtitle: "The Intelligence Layer for Video", status: "coming soon", borderSlides: [3], images: [
-    "documentation/flowstate/1.jpg",
-    "documentation/flowstate/2.jpg",
-    "documentation/flowstate/3.jpg",
-    "documentation/flowstate/4.jpg",
-    "documentation/flowstate/5.jpg",
-  ] },
-  { id: "mindfort", number: "010", title: "Mindfort", date: "2026 Q2", type: "carousel", aspect: "portrait", thumb: "documentation/mindfort/2.jpg", slides: 6, subtitle: "Continuous security across everything you build", status: "coming soon", media: [
+  { id: "mindfort", number: "010", title: "Mindfort", date: "2026 Q2", type: "carousel", aspect: "landscape", thumb: "documentation/Thumbnails/Mindfort.png", thumbFit: "fill", slides: 6, subtitle: "Continuous security across everything you build", status: "coming soon", media: [
     "documentation/mindfort/1.jpg",
     "documentation/mindfort/2.jpg",
     "documentation/mindfort/3.jpg",
@@ -391,14 +383,14 @@ const PROJECTS = [
     "documentation/mindfort/5.jpg",
     "documentation/mindfort/6.jpg",
   ] },
-  { id: "pax-market", number: "011", title: "PAX Market", date: "2025 Q3", type: "carousel", aspect: "square", thumb: "documentation/pax/1.jpg", thumbFit: "fill", slides: 5, subtitle: "The future of crypto exchange", status: "coming soon", media: [
-    "documentation/pax/1.jpg",
-    { type: "video", src: "documentation/pax/2.mp4", fit: "contain" },
-    { type: "video", src: "documentation/pax/3.mp4", fit: "contain" },
-    "documentation/pax/4.jpg",
-    "documentation/pax/5.jpg",
+  { id: "flowstate", number: "011", title: "Flowstate", date: "2026 Q1", type: "carousel", aspect: "square", thumb: "documentation/Thumbnails/Flowstate.png", thumbFit: "fill", slides: 5, subtitle: "The Intelligence Layer for Video", status: "coming soon", borderSlides: [3], images: [
+    "documentation/flowstate/1.jpg",
+    "documentation/flowstate/2.jpg",
+    "documentation/flowstate/3.jpg",
+    "documentation/flowstate/4.jpg",
+    "documentation/flowstate/5.jpg",
   ] },
-  { id: "ehi", number: "012", title: "EHI", caseTitle: "The Ernest Hemingway Institute", date: "2025 Q2", type: "long", thumb: "documentation/EHI/1.jpg", thumbFit: "fill", subtitle: "A new kind of writing school for a new\nkind of writer", client: "The Ernest Hemingway Institute", year: "2025 Q2", service: "Brand Identity · Web Design", question: "Hemingway stripped writing down to its essentials—we do the same with education.",
+  { id: "ehi", number: "012", title: "EHI", caseTitle: "The Ernest Hemingway Institute", date: "2025 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/EHI.png", thumbFit: "fill", subtitle: "A new kind of writing school for a new\nkind of writer", client: "The Ernest Hemingway Institute", year: "2025 Q2", service: "Brand Identity · Web Design", question: "Hemingway stripped writing down to its essentials—we do the same with education.",
     deepHeadline: "Hemingway stripped writing down to its essentials—we do the same with education.",
     challenge: "The Ernest Hemingway Institute is a new kind of writing school for a new kind of writer. In a world crowded with content and shortcuts, EHI wanted to bring back discipline, structure, and care to the craft of writing. The challenge was to build a brand that could carry Hemingway's literary legacy while feeling relevant to a new generation of writers.",
     strategyLabel: "Outcome",
@@ -432,7 +424,8 @@ const PROJECTS = [
     { type: "image", src: "documentation/EHI/15.jpeg", width: 2500, height: 1672 },
     { type: "image", src: "documentation/EHI/16.jpg", width: 1465, height: 980 },
     { type: "image", src: "documentation/EHI/17.jpeg", width: 2150, height: 1284 },
-  ] },
+  ] }
+
 ].map((project, index) => {
   const images = project.images || [];
   const videos = project.videos || [];
