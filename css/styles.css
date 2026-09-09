@@ -2049,14 +2049,15 @@ video::-webkit-media-controls-volume-slider {
     gap: 12px;
   }
 
+  /* Keep each shot’s desktop width share when stacked (portrait / half-slot stay small). */
   .long__row {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
   .long__row .long__shot {
     flex: none;
-    width: 100%;
+    width: calc(var(--shot-row-share, 1) * 100%);
     max-width: 100%;
     height: auto;
     aspect-ratio: var(--shot-ar, auto);
@@ -2064,13 +2065,13 @@ video::-webkit-media-controls-volume-slider {
 
   .long__split {
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
   }
 
   .long__split > .long__shot,
   .long__split-col {
     flex: none;
-    width: 100%;
+    width: calc(var(--shot-row-share, 0.5) * 100%);
   }
 
   .long__question-block {

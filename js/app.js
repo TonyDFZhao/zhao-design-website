@@ -1439,15 +1439,23 @@
     const leftHTML = splitColumnHTML(block.left);
     const rightHTML = splitColumnHTML(block.right);
     if (!leftHTML || !rightHTML) return "";
-    /* Equal columns: stacked images share the opposite height when ARs match the design. */
+    /* Equal columns: stacked images share the opposite height when ARs match the design.
+       On mobile each column keeps a half-width “slot” instead of stretching full bleed. */
     return `
-      <div class="long__split">
+      <div class="long__split" style="--shot-row-share:0.5">
         ${leftHTML}
         ${rightHTML}
       </div>`;
   }
 
-  function mediaFigureHTML(item, inRow = false, splitOpts = null) {
+  function shotFlex(item) {
+    if (item.flex) return 1;
+    const arW = item.width || 1;
+    const arH = item.height || 1;
+    return arW / arH;
+  }
+
+  function mediaFigureHTML(item, inRow = false, splitOpts = null, rowShare = null) {
     const REF_CASE_W = 1048; /* design width used when gallery heights were authored */
     const classes = [
       "long__shot",
@@ -1461,10 +1469,13 @@
     if (item.border && item.borderAlpha != null) {
       style.push(`--stroke-alpha:${item.borderAlpha}`);
     }
+    if (rowShare != null) {
+      style.push(`--shot-row-share:${rowShare}`);
+    }
     if (inRow) {
       const arW = item.width || 1;
       const arH = item.height || 1;
-      const grow = item.flex ? 1 : arW / arH;
+      const grow = shotFlex(item);
       style.push(`--shot-ar:${arW} / ${arH}`);
       style.push(`--shot-flex:${grow}`);
     } else if (splitOpts?.split) {
@@ -1596,8 +1607,10 @@
             return questionBlockHTML(project.question);
           }
           if (block.type === "row") {
+            const flexes = block.items.map(shotFlex);
+            const total = flexes.reduce((sum, n) => sum + n, 0) || 1;
             return `<div class="long__row">${block.items
-              .map((item) => mediaFigureHTML(item, true))
+              .map((item, i) => mediaFigureHTML(item, true, null, flexes[i] / total))
               .join("")}</div>`;
           }
           if (block.type === "split") {
