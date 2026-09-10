@@ -109,7 +109,7 @@
     }
     infoExpanded = true;
     document.body.classList.add("is-locked");
-    /* Phase 1: short bio out + background dim together */
+    /* Phase 1: short bio + contact out + background dim together */
     home.classList.add("is-info-expanded");
     info.classList.add("is-hiding-short");
     info.classList.remove("is-expanded", "is-hiding-long");
@@ -118,7 +118,7 @@
     infoAnimTimer = setTimeout(() => {
       infoAnimTimer = null;
       if (!infoExpanded) return;
-      /* Phase 2: long bio + esc fade in */
+      /* Phase 2: long bio + contact + esc fade in */
       info.classList.add("is-expanded");
       info.classList.remove("is-hiding-short");
       infoEsc.classList.add("is-visible");
@@ -134,7 +134,7 @@
     infoEsc.classList.remove("is-visible");
 
     if (wasExpanded) {
-      /* Phase 1: long bio + esc out (keep layout height) */
+      /* Phase 1: long bio + contact + esc out (keep layout height) */
       info.classList.add("is-hiding-long");
       infoAnimTimer = setTimeout(() => {
         infoAnimTimer = null;
@@ -203,6 +203,25 @@
   });
 
   /* ——— Feed ——— */
+  function isVideoThumb(src) {
+    return !!src && /\.mp4($|\?)/i.test(src);
+  }
+
+  function playFeedThumbVideos() {
+    feed.querySelectorAll(".project__thumb-video").forEach((video) => {
+      stripVideoChrome(video);
+      video.muted = true;
+      video.defaultMuted = true;
+      video.autoplay = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("autoplay", "");
+      const play = video.play();
+      if (play && typeof play.then === "function") play.catch(() => {});
+    });
+  }
+
   function renderFeed() {
     feed.innerHTML = "";
     PROJECTS.forEach((project, index) => {
@@ -211,9 +230,16 @@
       btn.className = "project";
       btn.dataset.index = String(index);
       btn.id = `project-${project.id}`;
+      const videoThumb = isVideoThumb(project.thumb);
+      const mediaClass = `project__thumb-media${project.thumbFit === "fill" ? " is-fill" : ""}`;
+      const media = videoThumb
+        ? `<div class="${mediaClass}">
+            <video class="project__thumb-video" src="${project.thumb}" muted autoplay loop playsinline webkit-playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback noplaybackrate"></video>
+          </div>`
+        : `<div class="${mediaClass}"${project.thumb ? ` style="background-image: url('${project.thumb}')"` : ""}></div>`;
       btn.innerHTML = `
         <div class="project__thumb project__thumb--${project.aspect}${project.thumb ? " has-image" : ""}${project.border ? " has-stroke" : ""}">
-          <div class="project__thumb-media${project.thumbFit === "fill" ? " is-fill" : ""}"${project.thumb ? ` style="background-image: url('${project.thumb}')"` : ""}></div>
+          ${media}
         </div>
         <div class="project__meta">
           <span class="project__title">${project.title}</span>
@@ -222,6 +248,7 @@
       btn.addEventListener("click", () => openFromIndex(index));
       feed.appendChild(btn);
     });
+    playFeedThumbVideos();
   }
 
   /* ——— Rail menu + progress ——— */
@@ -412,6 +439,7 @@
     }
     openProject = null;
     dimHome(false);
+    playFeedThumbVideos();
 
     const finishClose = () => {
       closeFadeTimer = null;
@@ -947,14 +975,66 @@
       const dots = [...slot.querySelectorAll(".swap__dot")];
       if (imgs.length < 2) return;
       let index = 0;
-      const id = setInterval(() => {
+      let timerId = null;
+      const timerSlot = swapTimers.length;
+      swapTimers.push(null);
+
+      function show(next) {
         imgs[index].classList.remove("is-active");
         dots[index]?.classList.remove("is-active");
-        index = (index + 1) % imgs.length;
+        index = (next + imgs.length) % imgs.length;
         imgs[index].classList.add("is-active");
         dots[index]?.classList.add("is-active");
-      }, 3000);
-      swapTimers.push(id);
+      }
+
+      function advance(dir) {
+        show(index + dir);
+      }
+
+      function step(dir) {
+        advance(dir);
+        restartTimer();
+      }
+
+      function restartTimer() {
+        if (timerId) clearInterval(timerId);
+        timerId = setInterval(() => advance(1), 3000);
+        swapTimers[timerSlot] = timerId;
+      }
+
+      const prev = slot.querySelector(".swap__hit--prev");
+      const next = slot.querySelector(".swap__hit--next");
+      prev?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (isMobile()) return;
+        step(-1);
+      });
+      next?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (isMobile()) return;
+        step(1);
+      });
+
+      let swipeStartX = 0;
+      let swipeStartY = 0;
+      let swipeActive = false;
+      slot.addEventListener("pointerdown", (e) => {
+        if (!isMobile()) return;
+        swipeStartX = e.clientX;
+        swipeStartY = e.clientY;
+        swipeActive = true;
+      });
+      slot.addEventListener("pointerup", (e) => {
+        if (!swipeActive) return;
+        swipeActive = false;
+        if (!isMobile()) return;
+        const dx = e.clientX - swipeStartX;
+        const dy = e.clientY - swipeStartY;
+        if (Math.abs(dx) < SWIPE_MIN || Math.abs(dx) < Math.abs(dy)) return;
+        step(dx < 0 ? 1 : -1);
+      });
+
+      restartTimer();
     });
   }
 
@@ -1274,13 +1354,16 @@
     clearSlide(carouselSlideA);
     clearSlide(carouselSlideB);
 
-    document.getElementById("carousel-num").textContent = project.number;
     document.getElementById("carousel-title").textContent = project.title;
     document.getElementById("carousel-sub").textContent = project.subtitle || "";
     document.getElementById("carousel-intro").hidden = !project.subtitle;
     document.getElementById("carousel-status").textContent =
       project.status || "";
-    document.getElementById("carousel-date").textContent = project.date;
+    const dateText = String(project.date || "");
+    const yearMatch = dateText.match(/\d{4}/);
+    document.getElementById("carousel-date").textContent = yearMatch
+      ? yearMatch[0]
+      : dateText;
     const media = getCarouselMedia(project);
     renderCarouselDots(media.length || project.slides || 1);
     document
@@ -1519,6 +1602,8 @@
         .join("");
       return `
         <figure class="${classes} long__swap"${styleAttr ? ` style="${styleAttr}"` : ""}>
+          <div class="swap__hit swap__hit--prev" aria-label="Previous"></div>
+          <div class="swap__hit swap__hit--next" aria-label="Next"></div>
           ${imgs}
           <div class="swap__bar" aria-hidden="true">${dots}</div>
         </figure>`;
@@ -2300,4 +2385,8 @@
   renderTicks();
   updateProgress();
   onScroll();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") playFeedThumbVideos();
+  });
 })();
