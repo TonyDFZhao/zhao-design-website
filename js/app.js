@@ -40,6 +40,7 @@
   let swipeActive = false;
   let closeFadeTimer = null;
   const MOBILE_MQ = "(max-width: 720px)";
+  const TOUCH_DEVICE_MQ = "(hover: none) and (pointer: coarse)";
   const SWIPE_MIN = 40;
   const OVERLAY_FADE_MS = 350; /* matches --dur */
   const imageCache = new Map();
@@ -59,6 +60,12 @@
 
   function isMobile() {
     return window.matchMedia(MOBILE_MQ).matches;
+  }
+
+  /* Real phones/tablets — not a narrowed desktop window. */
+  function isTouchDevice() {
+    if (window.matchMedia(TOUCH_DEVICE_MQ).matches) return true;
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent || "");
   }
 
   function getTickStep() {
@@ -207,45 +214,115 @@
     return !!src && /\.mp4($|\?)/i.test(src);
   }
 
+  function feedThumbSrc(project) {
+    if (isTouchDevice() && project.thumbStill) return project.thumbStill;
+    return project.thumb;
+  }
+
+  function feedThumbIsVideo(project) {
+    return !isTouchDevice() && isVideoThumb(project.thumb);
+  }
+
+  function armFeedThumbVideo(video, src) {
+    if (!video) return;
+    stripVideoChrome(video);
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+    video.autoplay = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.controls = false;
+    video.preload = "auto";
+    video.removeAttribute("controls");
+    video.setAttribute("muted", "");
+    video.setAttribute("autoplay", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.setAttribute("x-webkit-airplay", "deny");
+    if (src && video.getAttribute("src") !== src) {
+      video.src = src;
+    }
+  }
+
   function playFeedThumbVideos() {
+    if (isTouchDevice()) return;
     feed.querySelectorAll(".project__thumb-video").forEach((video) => {
-      stripVideoChrome(video);
-      video.muted = true;
-      video.defaultMuted = true;
-      video.autoplay = true;
-      video.loop = true;
-      video.playsInline = true;
-      video.setAttribute("muted", "");
-      video.setAttribute("autoplay", "");
-      const play = video.play();
-      if (play && typeof play.then === "function") play.catch(() => {});
+      armFeedThumbVideo(video);
+      const tryPlay = () => {
+        if (!video.isConnected) return;
+        if (!video.paused && !video.ended) return;
+        const play = video.play();
+        if (play && typeof play.then === "function") {
+          play.catch(() => {});
+        }
+      };
+      tryPlay();
+      if (video.readyState < 2) {
+        video.addEventListener("loadeddata", tryPlay, { once: true });
+        video.addEventListener("canplay", tryPlay, { once: true });
+      }
     });
+  }
+
+  function bindFeedVideoUnlock() {
+    if (isTouchDevice()) return;
+    const unlock = () => playFeedThumbVideos();
+    document.addEventListener("touchstart", unlock, { passive: true });
+    document.addEventListener("pointerdown", unlock, { passive: true });
+    home.addEventListener("scroll", unlock, { passive: true });
   }
 
   function renderFeed() {
     feed.innerHTML = "";
     PROJECTS.forEach((project, index) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
+      /* Use a div, not <button>: iOS blocks autoplay for video inside buttons
+         and paints a native play overlay. */
+      const btn = document.createElement("div");
       btn.className = "project";
       btn.dataset.index = String(index);
       btn.id = `project-${project.id}`;
-      const videoThumb = isVideoThumb(project.thumb);
-      const mediaClass = `project__thumb-media${project.thumbFit === "fill" ? " is-fill" : ""}`;
-      const media = videoThumb
-        ? `<div class="${mediaClass}">
-            <video class="project__thumb-video" src="${project.thumb}" muted autoplay loop playsinline webkit-playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback noplaybackrate"></video>
-          </div>`
-        : `<div class="${mediaClass}"${project.thumb ? ` style="background-image: url('${project.thumb}')"` : ""}></div>`;
-      btn.innerHTML = `
-        <div class="project__thumb project__thumb--${project.aspect}${project.thumb ? " has-image" : ""}${project.border ? " has-stroke" : ""}">
-          ${media}
-        </div>
-        <div class="project__meta">
-          <span class="project__title">${project.title}</span>
-        </div>
-      `;
-      btn.addEventListener("click", () => openFromIndex(index));
+      btn.setAttribute("role", "button");
+      btn.tabIndex = 0;
+
+      const thumbSrc = feedThumbSrc(project);
+      const useVideo = feedThumbIsVideo(project);
+
+      const thumb = document.createElement("div");
+      thumb.className = `project__thumb project__thumb--${project.aspect}${thumbSrc ? " has-image" : ""}${project.border ? " has-stroke" : ""}`;
+
+      const media = document.createElement("div");
+      media.className = `project__thumb-media${project.thumbFit === "fill" ? " is-fill" : ""}`;
+
+      if (useVideo) {
+        const video = document.createElement("video");
+        video.className = "project__thumb-video";
+        /* Set muted/playsInline BEFORE src — required for iOS autoplay. */
+        armFeedThumbVideo(video, project.thumb);
+        media.appendChild(video);
+      } else if (thumbSrc) {
+        media.style.backgroundImage = `url('${thumbSrc}')`;
+      }
+
+      thumb.appendChild(media);
+      btn.appendChild(thumb);
+
+      const meta = document.createElement("div");
+      meta.className = "project__meta";
+      meta.innerHTML = `<span class="project__title">${project.title}</span>`;
+      btn.appendChild(meta);
+
+      const open = () => {
+        playFeedThumbVideos();
+        openFromIndex(index);
+      };
+      btn.addEventListener("click", open);
+      btn.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
       feed.appendChild(btn);
     });
     playFeedThumbVideos();
@@ -2385,6 +2462,7 @@
   renderTicks();
   updateProgress();
   onScroll();
+  bindFeedVideoUnlock();
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") playFeedThumbVideos();

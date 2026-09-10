@@ -119,7 +119,7 @@ const SCEND_CASE = {
 };
 
 const PROJECTS = [
-  { id: "21group", number: "001", title: "21 Group", date: "2026 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/21Group.mp4", thumbFit: "fill", subtitle: "Multi-strategy holding company taking over\nthe growing MENA market.", client: "21 Group", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "How do you make a young company feel dominant? By making its future success seem inevitable.",
+  { id: "21group", number: "001", title: "21 Group", date: "2026 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/21Group.mp4", thumbStill: "documentation/Thumbnails/21Group.png", thumbFit: "fill", subtitle: "Multi-strategy holding company taking over\nthe growing MENA market.", client: "21 Group", year: "2026 Q2", service: "Brand Identity, Web Design, Web Production", question: "How do you make a young company feel dominant? By making its future success seem inevitable.",
     deepHeadline: "How do you make a young company feel dominant?\nBy making its future success seem inevitable.",
     challenge: "Leaders from 21 Group came to us because they wanted to build something that lasts: turning family connections into the foundation of a holding company built to become a dominant force in the growing MENA market.",
     strategyLabel: "Strategy",
@@ -261,7 +261,7 @@ const PROJECTS = [
     { type: "interactive", variant: "last", width: 1024, height: 682 },
   ] },
   { id: "scend", number: "004", title: "Scend", date: "2025 Q2", type: "long", ...SCEND_CASE, thumb: "documentation/Thumbnails/Scend.png", thumbFit: "fill", aspect: "square" },
-  { id: "proximitty", number: "005", title: "Proximitty", date: "2026 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/Proximitty.mp4", thumbFit: "fill", subtitle: "Making commercial lending seamless\nwith AI", client: "Proximitty (PearX W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Motion Graphics, Web Production", question: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
+  { id: "proximitty", number: "005", title: "Proximitty", date: "2026 Q2", type: "long", aspect: "landscape", thumb: "documentation/Thumbnails/Proximitty.mp4", thumbStill: "documentation/Thumbnails/Proximitty.jpg", thumbFit: "fill", subtitle: "Making commercial lending seamless\nwith AI", client: "Proximitty (PearX W26)", year: "2026 Q2", service: "Brand Identity, Web Design, Motion Graphics, Web Production", question: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
     deepHeadline: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious. Proximitty wants to change that.",
     challenge: "Commercial lending is a serious business, but the tools behind it can feel just as cold and serious: spreadsheets, legacy banking systems, dense financial data, endless manual work… Proximitty needed to position its AI agents as a warm, efficient tool for lending teams: enterprise-ready enough to earn trust from financial institutions, but grounded in the real businesses and people they serve.",
     strategyLabel: "Strategy",
@@ -333,7 +333,7 @@ const PROJECTS = [
     { type: "image", src: "documentation/Faction/11.jpg", width: 3072, height: 2048 },
     { type: "image", src: "documentation/Faction/12.jpg", width: 3072, height: 2048 },
   ] },
-  { id: "ghosteye", number: "007", title: "GhostEye", date: "2025 Q3", type: "carousel", aspect: "landscape", thumb: "documentation/Thumbnails/GhostEye.mp4", thumbFit: "fill", border: true, slides: 3, subtitle: "The always-on red team", status: "coming soon", videos: [
+  { id: "ghosteye", number: "007", title: "GhostEye", date: "2025 Q3", type: "carousel", aspect: "landscape", thumb: "documentation/Thumbnails/GhostEye.mp4", thumbStill: "documentation/Thumbnails/GhostEye.png", thumbFit: "fill", border: true, slides: 3, subtitle: "The always-on red team", status: "coming soon", videos: [
     "documentation/GhostEye/1.mp4",
     "documentation/GhostEye/2.mp4",
     "documentation/GhostEye/3.mp4",
@@ -375,7 +375,7 @@ const PROJECTS = [
     "documentation/pax/4.jpg",
     "documentation/pax/5.jpg",
   ] },
-  { id: "mindfort", number: "010", title: "Mindfort", date: "2026 Q2", type: "carousel", aspect: "landscape", thumb: "documentation/Thumbnails/Mindfort.mp4", thumbFit: "fill", slides: 6, subtitle: "Continuous security across everything you build", status: "coming soon", media: [
+  { id: "mindfort", number: "010", title: "Mindfort", date: "2026 Q2", type: "carousel", aspect: "landscape", thumb: "documentation/Thumbnails/Mindfort.mp4", thumbStill: "documentation/Thumbnails/Mindfort.png", thumbFit: "fill", slides: 6, subtitle: "Continuous security across everything you build", status: "coming soon", media: [
     "documentation/mindfort/1.jpg",
     "documentation/mindfort/2.jpg",
     "documentation/mindfort/3.jpg",

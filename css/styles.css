@@ -420,7 +420,9 @@ button {
 .project__thumb {
   position: relative;
   height: var(--project-h);
-  overflow: hidden;
+  /* Avoid overflow:hidden here — iOS Safari won’t autoplay inline video
+     under an overflow-hidden ancestor and shows a native play button. */
+  overflow: visible;
   background: var(--color-greybox);
   border-radius: var(--radius-sm);
   opacity: 0.4;
@@ -437,6 +439,8 @@ button {
   background: inherit;
   background-size: cover;
   background-position: center;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--radius-sm));
   transition: transform var(--dur) var(--ease);
 }
 
@@ -454,6 +458,22 @@ button {
   object-fit: cover;
   object-position: center;
   pointer-events: none;
+  border: 0;
+  outline: none;
+  border-radius: inherit;
+  background: var(--color-greybox);
+}
+
+.project__thumb-video::-webkit-media-controls,
+.project__thumb-video::-webkit-media-controls-start-playback-button,
+.project__thumb-video::-webkit-media-controls-overlay-play-button,
+.project__thumb-video::-webkit-media-controls-enclosure {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .project:hover .project__thumb-media {
@@ -1505,7 +1525,11 @@ button {
   flex: 1 0 0;
   width: auto;
   max-width: none;
-  aspect-ratio: var(--shot-ar, auto);
+  /* Let the taller column set height; stretch this shot to match. */
+  height: auto;
+  min-height: 0;
+  align-self: stretch;
+  aspect-ratio: auto;
 }
 
 .long__split-col {
@@ -1514,11 +1538,14 @@ button {
   flex-direction: column;
   gap: var(--media-gap);
   min-width: 0;
+  min-height: 0;
+  align-self: stretch;
 }
 
 .long__split-col .long__shot {
   width: 100%;
   flex: 0 0 auto;
+  height: auto;
 }
 
 .long__split .long__shot img,
@@ -2078,6 +2105,10 @@ video::-webkit-media-controls-volume-slider {
 /* ——— Mobile long-form + design-story sheet (≤720) ——— */
 
 @media (max-width: 720px) {
+  :root {
+    --media-gap: 8px;
+  }
+
   .case {
     width: calc(100vw - var(--mobile-pad) * 2);
     max-width: none;
@@ -2099,8 +2130,11 @@ video::-webkit-media-controls-volume-slider {
     letter-spacing: -0.64px;
   }
 
-  .long__media {
-    gap: 12px;
+  .long__media,
+  .long__row,
+  .long__split,
+  .long__split-col {
+    gap: var(--media-gap);
   }
 
   .long__shot,
@@ -2134,6 +2168,14 @@ video::-webkit-media-controls-volume-slider {
   .long__split-col {
     flex: 1 0 0;
     width: auto;
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  .long__split > .long__shot {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
   }
 
   .long__question-block {
