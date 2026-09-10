@@ -796,6 +796,18 @@
     const src = video?.dataset?.src;
     if (!src) return;
     const url = videoUrl(src);
+    stripVideoChrome(video);
+    video.muted = true;
+    video.defaultMuted = true;
+    video.volume = 0;
+    video.loop = true;
+    video.playsInline = true;
+    video.controls = false;
+    video.removeAttribute("controls");
+    video.setAttribute("muted", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.setAttribute("x-webkit-airplay", "deny");
     if (video.getAttribute("src") === url) return;
     video.preload = "auto";
     video.src = url;
@@ -804,18 +816,39 @@
 
   function maybeStartLongVideo(video) {
     if (!video || !video.isConnected) return;
-    if (video.dataset.scrollPlayed === "1") return;
+    if (video.dataset.scrollPlayed === "1" && !video.paused) return;
     if (!isScrollPlayTrigger(video)) return;
     ensureVideoSrc(video);
-    if (video.readyState < 2) return;
-    const play = video.play();
-    if (play && typeof play.then === "function") {
-      play
-        .then(() => {
-          if (!video.paused) video.dataset.scrollPlayed = "1";
-        })
-        .catch(() => {});
+
+    const tryPlay = () => {
+      if (!video.isConnected) return;
+      if (!isScrollPlayTrigger(video)) return;
+      const play = video.play();
+      if (play && typeof play.then === "function") {
+        play
+          .then(() => {
+            if (!video.paused) video.dataset.scrollPlayed = "1";
+          })
+          .catch(() => {
+            video.dataset.scrollPlayed = "0";
+          });
+      }
+    };
+
+    if (video.readyState >= 2) {
+      tryPlay();
+      return;
     }
+    video.addEventListener("loadeddata", tryPlay, { once: true });
+    video.addEventListener("canplay", tryPlay, { once: true });
+  }
+
+  function kickLongVideos() {
+    document.querySelectorAll("#long-media .long__video").forEach((video) => {
+      if (!video.paused && video.dataset.scrollPlayed === "1") return;
+      video.dataset.scrollPlayed = "0";
+      maybeStartLongVideo(video);
+    });
   }
 
   function checkLottieTriggers() {
@@ -876,7 +909,7 @@
     lottieObserver = new IntersectionObserver(
       () => checkLottieTriggers(),
       {
-        root: null,
+        root: caseScroll && caseScroll.clientHeight > 0 ? caseScroll : null,
         rootMargin: "0px 0px -10% 0px",
         threshold: [0, 0.25, 0.5, 0.75, 1],
       }
@@ -899,24 +932,18 @@
       video.controls = false;
       video.removeAttribute("controls");
       video.muted = true;
+      video.defaultMuted = true;
+      video.volume = 0;
       video.loop = true;
+      video.playsInline = true;
       video.autoplay = false;
       video.removeAttribute("autoplay");
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
       video.dataset.scrollPlayed = "0";
       video.preload = "none";
-      video.addEventListener("loadeddata", () => {
-        if (video.dataset.playTrigger === "immediate") {
-          maybeStartLongVideo(video);
-          return;
-        }
-        try {
-          video.pause();
-          if (video.currentTime > 0.05) video.currentTime = 0;
-        } catch {
-          /* ignore */
-        }
-        maybeStartLongVideo(video);
-      });
+      video.addEventListener("loadeddata", () => maybeStartLongVideo(video));
       video.addEventListener("canplay", () => maybeStartLongVideo(video));
       if (video.dataset.playTrigger === "immediate") ensureVideoSrc(video);
     });
@@ -931,15 +958,19 @@
       return;
     }
 
+    /* Observe against the case scroller so nested mobile scroll still loads. */
+    const ioRoot =
+      caseScroll && caseScroll.clientHeight > 0 ? caseScroll : null;
     videoLoadObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           ensureVideoSrc(entry.target);
+          maybeStartLongVideo(entry.target);
           videoLoadObserver?.unobserve(entry.target);
         });
       },
-      { root: null, rootMargin: "600px 0px 900px 0px", threshold: 0.01 }
+      { root: ioRoot, rootMargin: "800px 0px 1000px 0px", threshold: 0.01 }
     );
     pending.forEach((video) => videoLoadObserver.observe(video));
   }
@@ -2396,6 +2427,14 @@
     "scroll",
     () => {
       updateDeepChrome();
+      checkLottieTriggers();
+    },
+    { passive: true }
+  );
+  caseScroll.addEventListener(
+    "touchstart",
+    () => {
+      kickLongVideos();
       checkLottieTriggers();
     },
     { passive: true }

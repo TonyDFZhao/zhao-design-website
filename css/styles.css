@@ -420,9 +420,7 @@ button {
 .project__thumb {
   position: relative;
   height: var(--project-h);
-  /* Avoid overflow:hidden here — iOS Safari won’t autoplay inline video
-     under an overflow-hidden ancestor and shows a native play button. */
-  overflow: visible;
+  overflow: hidden;
   background: var(--color-greybox);
   border-radius: var(--radius-sm);
   opacity: 0.4;
@@ -439,8 +437,6 @@ button {
   background: inherit;
   background-size: cover;
   background-position: center;
-  border-radius: inherit;
-  clip-path: inset(0 round var(--radius-sm));
   transition: transform var(--dur) var(--ease);
 }
 
@@ -460,7 +456,6 @@ button {
   pointer-events: none;
   border: 0;
   outline: none;
-  border-radius: inherit;
   background: var(--color-greybox);
 }
 
@@ -1561,9 +1556,11 @@ button {
   min-width: 0;
   max-width: 100%;
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  /* Prefer clip-path over overflow:hidden — iOS Safari won’t autoplay
+     muted inline video under an overflow-hidden ancestor. */
+  overflow: visible;
   isolation: isolate;
-  clip-path: inset(0);
+  clip-path: inset(0 round var(--radius-lg));
   background: var(--color-greybox);
   background-size: cover;
   background-position: center;
@@ -1608,6 +1605,20 @@ button {
   max-width: none;
   object-fit: cover;
   pointer-events: none;
+  border: 0;
+  outline: none;
+}
+
+.long__video::-webkit-media-controls,
+.long__video::-webkit-media-controls-start-playback-button,
+.long__video::-webkit-media-controls-overlay-play-button,
+.long__video::-webkit-media-controls-enclosure {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 .long__shot--interactive {
