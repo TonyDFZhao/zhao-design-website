@@ -16,7 +16,7 @@ const SITE = {
   ],
   email: "tonydfzhao@gmail.com",
   instagram: "https://www.instagram.com/tony_zdf/",
-  cv: "assets/ZHAO_RESUME_2026.pdf",
+  cv: "assets/ZHAO_RESUME_2026.pdf?v=2026-09-12",
 };
 
 const ASPECT = {
